@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import {
   FileSystemState,
   FileSystemNode,
-  createDefaultMacFileSystem,
   createFile,
   createFolder,
   renameNode,
@@ -37,9 +36,9 @@ import {
 } from '@/simulation/actionRecorder';
 import {
   matchShortcut,
-  defaultMacShortcuts,
   ShortcutDefinition,
 } from '@/simulation/keyboardHandler';
+import { OSType, OS_CONFIGS, getDesktopPath, getShortcutsForOS } from '@/simulation/osConfig';
 
 export interface DesktopIconState {
   nodeId: string;
@@ -66,6 +65,10 @@ export interface LessonState {
 }
 
 export interface SimulationStore {
+  // OS type
+  osType: OSType;
+  setOsType: (osType: OSType) => void;
+
   // File system
   fileSystem: FileSystemState;
   createFile: (parentId: string, name: string, content?: string) => FileSystemNode;
@@ -157,8 +160,8 @@ export interface SimulationStore {
   loadState: (fileSystem: FileSystemState) => void;
 }
 
-function buildDesktopIcons(fs: FileSystemState): DesktopIconState[] {
-  const desktopNode = getNodeByPath(fs, '/Users/you/Desktop');
+function buildDesktopIcons(fs: FileSystemState, osType: OSType = 'macos'): DesktopIconState[] {
+  const desktopNode = getNodeByPath(fs, getDesktopPath(osType));
   if (!desktopNode) return [];
   const GRID_X = 80;
   const GRID_Y = 90;
@@ -173,9 +176,17 @@ function buildDesktopIcons(fs: FileSystemState): DesktopIconState[] {
 }
 
 export const useSimulationStore = create<SimulationStore>((set, get) => {
-  const initialFs = createDefaultMacFileSystem();
+  const initialOsType: OSType = 'macos';
+  const initialFs = OS_CONFIGS[initialOsType].fileSystemFactory();
 
   return {
+    // OS type
+    osType: initialOsType,
+    setOsType: (osType) => {
+      set({ osType });
+      get().resetSimulation();
+    },
+
     // File system
     fileSystem: initialFs,
     createFile: (parentId, name, content) => {
@@ -263,7 +274,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
       if (newState.focusedWindowId) {
         set({ activeApp: newState.windows[newState.focusedWindowId]?.appId || null });
       } else {
-        set({ activeApp: 'finder' });
+        set({ activeApp: OS_CONFIGS[get().osType].defaultActiveApp });
       }
     },
     focusWindow: (windowId) => {
@@ -292,7 +303,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
     getWindowsForApp: (appId) => getWindowsForApp(get().windowManager, appId),
 
     // Desktop
-    desktopIcons: buildDesktopIcons(initialFs),
+    desktopIcons: buildDesktopIcons(initialFs, initialOsType),
     setDesktopIcons: (icons) => set({ desktopIcons: icons }),
     selectDesktopIcon: (nodeId) => {
       set({
@@ -330,7 +341,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
     },
     refreshDesktopIcons: () => {
       const fs = get().fileSystem;
-      const desktopNode = getNodeByPath(fs, '/Users/you/Desktop');
+      const desktopNode = getNodeByPath(fs, getDesktopPath(get().osType));
       if (!desktopNode) return;
       const existingIcons = get().desktopIcons;
       const existingMap = new Map(existingIcons.map((i) => [i.nodeId, i]));
@@ -369,7 +380,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
     },
 
     // Running apps
-    runningApps: new Set(['finder']),
+    runningApps: new Set([OS_CONFIGS[initialOsType].defaultActiveApp]),
     launchApp: (appId) => {
       const existing = getWindowsForApp(get().windowManager, appId);
       if (existing.length > 0) {
@@ -386,7 +397,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
     },
 
     // Active app
-    activeApp: 'finder',
+    activeApp: OS_CONFIGS[initialOsType].defaultActiveApp,
 
     // Keyboard
     pressedKeys: new Set<string>(),
@@ -400,7 +411,8 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
     },
     clearPressedKeys: () => set({ pressedKeys: new Set() }),
     handleShortcut: () => {
-      const shortcut = matchShortcut(get().pressedKeys, defaultMacShortcuts, get().activeApp || undefined);
+      const shortcuts = getShortcutsForOS(get().osType);
+      const shortcut = matchShortcut(get().pressedKeys, shortcuts, get().activeApp || undefined);
       return shortcut;
     },
 
@@ -479,15 +491,17 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
 
     // Reset
     resetSimulation: () => {
-      const fs = createDefaultMacFileSystem();
+      const osType = get().osType;
+      const config = OS_CONFIGS[osType];
+      const fs = config.fileSystemFactory();
       set({
         fileSystem: fs,
         windowManager: createWindowManagerState(),
-        desktopIcons: buildDesktopIcons(fs),
+        desktopIcons: buildDesktopIcons(fs, osType),
         contextMenu: null,
         clipboard: null,
-        runningApps: new Set(['finder']),
-        activeApp: 'finder',
+        runningApps: new Set([config.defaultActiveApp]),
+        activeApp: config.defaultActiveApp,
         pressedKeys: new Set(),
         actionRecorder: createActionRecorderState(),
         spotlightOpen: false,
@@ -496,7 +510,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
     loadState: (fileSystem) => {
       set({
         fileSystem,
-        desktopIcons: buildDesktopIcons(fileSystem),
+        desktopIcons: buildDesktopIcons(fileSystem, get().osType),
       });
     },
   };

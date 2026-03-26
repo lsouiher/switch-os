@@ -350,3 +350,101 @@ export function findByName(state: FileSystemState, name: string): FileSystemNode
     (n) => n.name.toLowerCase().includes(name.toLowerCase())
   );
 }
+
+export function createDefaultWindowsFileSystem(): FileSystemState {
+  const root = createNode({ name: '/', type: 'folder' });
+  const users = createNode({ name: 'Users', type: 'folder', parentId: root.id });
+  const you = createNode({ name: 'you', type: 'folder', parentId: users.id });
+  const desktop = createNode({ name: 'Desktop', type: 'folder', parentId: you.id });
+  const documents = createNode({ name: 'Documents', type: 'folder', parentId: you.id });
+  const downloads = createNode({ name: 'Downloads', type: 'folder', parentId: you.id });
+  const pictures = createNode({ name: 'Pictures', type: 'folder', parentId: you.id });
+  const music = createNode({ name: 'Music', type: 'folder', parentId: you.id });
+  const videos = createNode({ name: 'Videos', type: 'folder', parentId: you.id });
+
+  const welcomeTxt = createNode({
+    name: 'Welcome.txt',
+    type: 'file',
+    parentId: desktop.id,
+    content: 'Welcome to SwitchOS! This is your simulated Windows desktop.\n\nFeel free to explore — you can\'t break anything here.',
+    icon: 'text',
+    size: 118,
+    metadata: { fileExtension: 'txt', mimeType: 'text/plain' },
+  });
+  const sampleImg = createNode({
+    name: 'SampleImage.png',
+    type: 'file',
+    parentId: desktop.id,
+    icon: 'image',
+    size: 245000,
+    metadata: { fileExtension: 'png', mimeType: 'image/png' },
+  });
+  const notesTxt = createNode({
+    name: 'Notes.txt',
+    type: 'file',
+    parentId: documents.id,
+    content: 'My notes go here.',
+    icon: 'text',
+    size: 18,
+    metadata: { fileExtension: 'txt', mimeType: 'text/plain' },
+  });
+  const reportDocx = createNode({
+    name: 'Report.docx',
+    type: 'file',
+    parentId: documents.id,
+    icon: 'document',
+    size: 52000,
+    metadata: { fileExtension: 'docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
+  });
+  const installerExe = createNode({
+    name: 'setup.exe',
+    type: 'file',
+    parentId: downloads.id,
+    icon: 'executable',
+    size: 85000000,
+    metadata: { fileExtension: 'exe', mimeType: 'application/x-msdownload' },
+  });
+  const vacationJpg = createNode({
+    name: 'vacation.jpg',
+    type: 'file',
+    parentId: pictures.id,
+    icon: 'image',
+    size: 3200000,
+    metadata: { fileExtension: 'jpg', mimeType: 'image/jpeg' },
+  });
+
+  const programFiles = createNode({ name: 'Program Files', type: 'folder', parentId: root.id });
+  const fileExplorerApp = createNode({ name: 'File Explorer', type: 'app', parentId: programFiles.id, icon: 'fileexplorer' });
+  const notepadApp = createNode({ name: 'Notepad', type: 'app', parentId: programFiles.id, icon: 'notepad' });
+  const powershellApp = createNode({ name: 'PowerShell', type: 'app', parentId: programFiles.id, icon: 'powershell' });
+  const cmdApp = createNode({ name: 'Command Prompt', type: 'app', parentId: programFiles.id, icon: 'cmd' });
+  const settingsApp = createNode({ name: 'Settings', type: 'app', parentId: programFiles.id, icon: 'winsettings' });
+  const edgeApp = createNode({ name: 'Microsoft Edge', type: 'app', parentId: programFiles.id, icon: 'edge' });
+  const calculatorApp = createNode({ name: 'Calculator', type: 'app', parentId: programFiles.id, icon: 'calculator' });
+
+  const recycleBin = createNode({ name: 'Recycle Bin', type: 'folder', parentId: root.id });
+
+  // Wire up children
+  root.children = [users.id, programFiles.id, recycleBin.id];
+  users.children = [you.id];
+  you.children = [desktop.id, documents.id, downloads.id, pictures.id, music.id, videos.id];
+  desktop.children = [welcomeTxt.id, sampleImg.id];
+  documents.children = [notesTxt.id, reportDocx.id];
+  downloads.children = [installerExe.id];
+  pictures.children = [vacationJpg.id];
+  programFiles.children = [fileExplorerApp.id, notepadApp.id, powershellApp.id, cmdApp.id, settingsApp.id, edgeApp.id, calculatorApp.id];
+
+  const allNodes = [
+    root, users, you, desktop, documents, downloads, pictures, music, videos,
+    welcomeTxt, sampleImg, notesTxt, reportDocx, installerExe, vacationJpg,
+    programFiles, fileExplorerApp, notepadApp, powershellApp, cmdApp, settingsApp, edgeApp, calculatorApp,
+    recycleBin,
+  ];
+
+  const nodes: Record<string, FileSystemNode> = {};
+  for (const node of allNodes) {
+    nodes[node.id] = node;
+  }
+
+  return { nodes, rootId: root.id, trashId: recycleBin.id };
+}

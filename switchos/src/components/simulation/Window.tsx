@@ -2,15 +2,133 @@
 
 import React, { useRef, useState, useCallback } from 'react';
 import { useSimulationStore } from '@/store/useSimulationStore';
-import type { WindowState } from '@/simulation/windowManager';
 
 interface WindowProps {
   windowId: string;
   children: React.ReactNode;
 }
 
+function MacTitleBar({
+  title,
+  isFocused,
+  onClose,
+  onMinimize,
+  onMaximize,
+  onMouseDown,
+}: {
+  title: string;
+  isFocused: boolean;
+  onClose: (e: React.MouseEvent) => void;
+  onMinimize: (e: React.MouseEvent) => void;
+  onMaximize: (e: React.MouseEvent) => void;
+  onMouseDown: (e: React.MouseEvent) => void;
+}) {
+  return (
+    <div
+      className="flex items-center h-9 px-3 shrink-0 cursor-default select-none"
+      style={{
+        background: isFocused
+          ? 'linear-gradient(180deg, #e8e8e8 0%, #d6d6d6 100%)'
+          : '#f0f0f0',
+        borderBottom: '1px solid rgba(0,0,0,0.1)',
+      }}
+      onMouseDown={onMouseDown}
+    >
+      {/* Traffic lights */}
+      <div className="traffic-light flex items-center gap-2 mr-4">
+        <button
+          onClick={onClose}
+          aria-label="Close window"
+          className="w-3 h-3 rounded-full bg-[#ff5f57] hover:brightness-90 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-red-400"
+        >
+          <span className="hidden group-hover:block text-[8px] text-black/50 leading-none">✕</span>
+        </button>
+        <button
+          onClick={onMinimize}
+          aria-label="Minimize window"
+          className="w-3 h-3 rounded-full bg-[#febc2e] hover:brightness-90 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-yellow-400"
+        >
+          <span className="hidden group-hover:block text-[8px] text-black/50 leading-none">−</span>
+        </button>
+        <button
+          onClick={onMaximize}
+          aria-label="Maximize window"
+          className="w-3 h-3 rounded-full bg-[#28c840] hover:brightness-90 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-green-400"
+        >
+          <span className="hidden group-hover:block text-[8px] text-black/50 leading-none">⤢</span>
+        </button>
+      </div>
+
+      {/* Title */}
+      <div className="flex-1 text-center text-xs text-gray-600 font-medium truncate">
+        {title}
+      </div>
+
+      <div className="w-14" /> {/* Spacer for symmetry */}
+    </div>
+  );
+}
+
+function WindowsTitleBar({
+  title,
+  isFocused,
+  onClose,
+  onMinimize,
+  onMaximize,
+  onMouseDown,
+}: {
+  title: string;
+  isFocused: boolean;
+  onClose: (e: React.MouseEvent) => void;
+  onMinimize: (e: React.MouseEvent) => void;
+  onMaximize: (e: React.MouseEvent) => void;
+  onMouseDown: (e: React.MouseEvent) => void;
+}) {
+  return (
+    <div
+      className="flex items-center h-8 shrink-0 cursor-default select-none"
+      style={{
+        background: isFocused ? '#ffffff' : '#f3f3f3',
+        borderBottom: '1px solid #e0e0e0',
+      }}
+      onMouseDown={onMouseDown}
+    >
+      {/* Title (left-aligned) */}
+      <div className="flex-1 text-xs text-gray-700 font-normal truncate pl-3">
+        {title}
+      </div>
+
+      {/* Window controls (right-aligned) */}
+      <div className="traffic-light flex items-center h-full">
+        <button
+          onClick={onMinimize}
+          aria-label="Minimize window"
+          className="w-12 h-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+        >
+          <span className="text-[10px] text-gray-600 leading-none">─</span>
+        </button>
+        <button
+          onClick={onMaximize}
+          aria-label="Maximize window"
+          className="w-12 h-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+        >
+          <span className="text-[10px] text-gray-600 leading-none">□</span>
+        </button>
+        <button
+          onClick={onClose}
+          aria-label="Close window"
+          className="w-12 h-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+        >
+          <span className="text-sm text-gray-600 hover:text-white leading-none">✕</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function Window({ windowId, children }: WindowProps) {
   const windowState = useSimulationStore((s) => s.windowManager.windows[windowId]);
+  const osType = useSimulationStore((s) => s.osType);
   const focusWindow = useSimulationStore((s) => s.focusWindow);
   const closeWindow = useSimulationStore((s) => s.closeWindow);
   const minimizeWindow = useSimulationStore((s) => s.minimizeWindow);
@@ -36,7 +154,8 @@ export default function Window({ windowId, children }: WindowProps) {
       const onMove = (me: MouseEvent) => {
         const dx = me.clientX - startX;
         const dy = me.clientY - startY;
-        moveWindowTo(windowId, startWinX + dx, Math.max(28, startWinY + dy));
+        const minY = osType === 'macos' ? 28 : 0;
+        moveWindowTo(windowId, startWinX + dx, Math.max(minY, startWinY + dy));
       };
 
       const onUp = () => {
@@ -47,7 +166,7 @@ export default function Window({ windowId, children }: WindowProps) {
       window.addEventListener('mousemove', onMove);
       window.addEventListener('mouseup', onUp);
     },
-    [windowId, windowState?.x, windowState?.y, focusWindow, moveWindowTo]
+    [windowId, windowState?.x, windowState?.y, focusWindow, moveWindowTo, osType]
   );
 
   const handleResize = useCallback(
@@ -122,6 +241,11 @@ export default function Window({ windowId, children }: WindowProps) {
     maximizeWindow(windowId);
   };
 
+  const isWindows = osType === 'windows';
+  const borderRadius = isWindows ? '8px' : '10px';
+
+  const TitleBar = isWindows ? WindowsTitleBar : MacTitleBar;
+
   return (
     <div
       ref={windowRef}
@@ -132,60 +256,29 @@ export default function Window({ windowId, children }: WindowProps) {
         width: windowState.width,
         height: windowState.height,
         zIndex: windowState.zIndex,
-        borderRadius: '10px',
+        borderRadius,
         overflow: 'hidden',
         boxShadow: windowState.isFocused
-          ? '0 22px 70px 4px rgba(0,0,0,0.56)'
-          : '0 8px 30px rgba(0,0,0,0.2)',
+          ? isWindows
+            ? '0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.08)'
+            : '0 22px 70px 4px rgba(0,0,0,0.56)'
+          : isWindows
+            ? '0 4px 16px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05)'
+            : '0 8px 30px rgba(0,0,0,0.2)',
         opacity: windowState.isFocused ? 1 : 0.95,
       }}
       onMouseDown={() => focusWindow(windowId)}
       role="dialog"
       aria-label={`${windowState.title} window`}
     >
-      {/* Title bar */}
-      <div
-        className="flex items-center h-9 px-3 shrink-0 cursor-default select-none"
-        style={{
-          background: windowState.isFocused
-            ? 'linear-gradient(180deg, #e8e8e8 0%, #d6d6d6 100%)'
-            : '#f0f0f0',
-          borderBottom: '1px solid rgba(0,0,0,0.1)',
-        }}
+      <TitleBar
+        title={windowState.title}
+        isFocused={windowState.isFocused}
+        onClose={handleClose}
+        onMinimize={handleMinimize}
+        onMaximize={handleMaximize}
         onMouseDown={handleTitleBarMouseDown}
-      >
-        {/* Traffic lights */}
-        <div className="traffic-light flex items-center gap-2 mr-4">
-          <button
-            onClick={handleClose}
-            aria-label="Close window"
-            className="w-3 h-3 rounded-full bg-[#ff5f57] hover:brightness-90 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-red-400"
-          >
-            <span className="hidden group-hover:block text-[8px] text-black/50 leading-none">✕</span>
-          </button>
-          <button
-            onClick={handleMinimize}
-            aria-label="Minimize window"
-            className="w-3 h-3 rounded-full bg-[#febc2e] hover:brightness-90 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-yellow-400"
-          >
-            <span className="hidden group-hover:block text-[8px] text-black/50 leading-none">−</span>
-          </button>
-          <button
-            onClick={handleMaximize}
-            aria-label="Maximize window"
-            className="w-3 h-3 rounded-full bg-[#28c840] hover:brightness-90 flex items-center justify-center group focus-visible:ring-2 focus-visible:ring-green-400"
-          >
-            <span className="hidden group-hover:block text-[8px] text-black/50 leading-none">⤢</span>
-          </button>
-        </div>
-
-        {/* Title */}
-        <div className="flex-1 text-center text-xs text-gray-600 font-medium truncate">
-          {windowState.title}
-        </div>
-
-        <div className="w-14" /> {/* Spacer for symmetry */}
-      </div>
+      />
 
       {/* Content */}
       <div className="flex-1 overflow-hidden bg-white">
