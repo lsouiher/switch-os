@@ -1,0 +1,65 @@
+{
+  "id": "windows-foundations-09",
+  "trackId": "windows-foundations",
+  "order": 9,
+  "title": "Window Management",
+  "description": "Learn to manage multiple windows — minimize, maximize, and switch between them.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-08"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [
+      { "appId": "fileexplorer" },
+      { "appId": "notepad" }
+    ],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": "notepad"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "You have two windows open — File Explorer and Notepad. Click on the File Explorer window to bring it to the front.",
+      "hint": "Click anywhere on the File Explorer window that's partially visible behind Notepad.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "fileexplorer" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Open a third application — PowerShell. Use the Taskbar to launch it.",
+      "hint": "Click the PowerShell icon (💠) in the Taskbar at the bottom.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "powershell" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Close the Notepad window using the X button or Ctrl+W.",
+      "hint": "Click the X in the top-right corner of the Notepad window, or press Ctrl+W.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_closed",
+        "params": { "appId": "notepad" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "powershell" } },
+        { "type": "window_closed", "params": { "appId": "notepad" } }
+      ]
+    }
+  }
+}

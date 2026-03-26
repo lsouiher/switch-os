@@ -1,0 +1,50 @@
+{
+  "id": "windows-foundations-07",
+  "trackId": "windows-foundations",
+  "order": 7,
+  "title": "Windows Settings",
+  "description": "Learn to navigate the Settings app and personalize your desktop.",
+  "estimatedMinutes": 5,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-06"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [{ "appId": "winsettings" }],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": "winsettings"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "The Settings app is open. Navigate to the Personalization category in the left sidebar.",
+      "hint": "Look at the left sidebar of Settings and click 'Personalization'.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "winsettings" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Change the desktop wallpaper by selecting a different background option.",
+      "hint": "In the Personalization section, click on one of the background wallpaper options to change it.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "setting_changed",
+        "params": { "setting": "wallpaper", "value": "bloom" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "setting_changed", "params": { "setting": "wallpaper", "value": "bloom" } }
+      ]
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "windows-foundations-05",
+  "trackId": "windows-foundations",
+  "order": 5,
+  "title": "Moving & Copying Files",
+  "description": "Learn to move and copy files between folders using cut, copy, and paste.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-04"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [{ "appId": "fileexplorer", "meta": { "path": "/Users/you/Desktop" } }],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": "fileexplorer"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Move the file 'SampleImage.png' from the Desktop to the Pictures folder. You can drag it, or use Cut (Ctrl+X) and Paste (Ctrl+V).",
+      "hint": "Select SampleImage.png, press Ctrl+X, navigate to Pictures, and press Ctrl+V.",
+      "hintDelayMs": 20000,
+      "completionCheck": {
+        "type": "file_moved",
+        "params": { "fileName": "SampleImage.png", "destinationPath": "/Users/you/Pictures" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Copy the file 'Notes.txt' from Documents to the Desktop.",
+      "hint": "Navigate to Documents, select Notes.txt, press Ctrl+C to copy, then go to Desktop and press Ctrl+V.",
+      "hintDelayMs": 20000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Desktop/Notes.txt" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "file_moved", "params": { "fileName": "SampleImage.png", "destinationPath": "/Users/you/Pictures" } },
+        { "type": "file_exists", "params": { "path": "/Users/you/Desktop/Notes.txt" } }
+      ]
+    }
+  }
+}

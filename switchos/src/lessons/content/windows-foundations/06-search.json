@@ -1,0 +1,56 @@
+{
+  "id": "windows-foundations-06",
+  "trackId": "windows-foundations",
+  "order": 6,
+  "title": "Windows Search",
+  "description": "Learn to use Windows Search to quickly find apps and files.",
+  "estimatedMinutes": 5,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-05"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Open Windows Search by clicking the search icon (🔍) in the Taskbar, or by pressing Win+S.",
+      "hint": "The search icon is next to the Start button in the Taskbar. Click it, or press Win+S on your keyboard.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "composite",
+        "params": {
+          "operator": "or",
+          "checks": [
+            { "type": "shortcut_used", "params": { "keys": ["Meta", "s"] } },
+            { "type": "search_performed", "params": {} }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Use Search to find and launch the Settings app. Type 'Settings' and click on it in the results.",
+      "hint": "Type 'Settings' in the search bar and click on the Settings app when it appears.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "winsettings" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "winsettings" } }
+      ]
+    }
+  }
+}

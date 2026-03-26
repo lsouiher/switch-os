@@ -1,0 +1,75 @@
+{
+  "id": "windows-foundations-08",
+  "trackId": "windows-foundations",
+  "order": 8,
+  "title": "Keyboard Shortcuts",
+  "description": "Learn essential Windows keyboard shortcuts for common tasks.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-07"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [{ "appId": "fileexplorer", "meta": { "path": "/Users/you/Desktop" } }],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": "fileexplorer"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Create a new folder using Ctrl+Shift+N.",
+      "hint": "Press and hold Ctrl and Shift, then press N.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Control", "Shift", "n"] }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Now close the current window using Ctrl+W.",
+      "hint": "Press Ctrl+W to close the active window.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Control", "w"] }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Open File Explorer using the Win+E shortcut.",
+      "hint": "Press the Windows key and E at the same time.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", "e"] }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Copy a file using Ctrl+C. Select Welcome.txt on the desktop and press Ctrl+C.",
+      "hint": "Click on Welcome.txt, then press Ctrl+C to copy it.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Control", "c"] }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "shortcut_used", "params": { "keys": ["Control", "Shift", "n"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Control", "w"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Meta", "e"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Control", "c"] } }
+      ]
+    }
+  }
+}
