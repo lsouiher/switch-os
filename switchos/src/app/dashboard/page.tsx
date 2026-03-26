@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { getAllTracks } from '@/lessons/loader';
+import PageShell from '@/components/ui/PageShell';
 
 interface UserProfile {
   name: string;
@@ -13,6 +14,18 @@ interface UserProfile {
   badges: { badgeId: string }[];
   progress: { lessonId: string; trackId: string; status: string; completedSteps: string[] }[];
 }
+
+const TRACK_COLORS: Record<string, string> = {
+  'macos-foundations': 'border-t-track-macos',
+  'windows-foundations': 'border-t-track-windows',
+  'linux-foundations': 'border-t-track-linux',
+};
+
+const TRACK_PROGRESS_COLORS: Record<string, string> = {
+  'macos-foundations': 'bg-track-macos',
+  'windows-foundations': 'bg-track-windows',
+  'linux-foundations': 'bg-track-linux',
+};
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -44,41 +57,14 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-gray-900">SwitchOS</Link>
-          <div className="flex items-center gap-4">
-            {isGuest ? (
-              <Link href="/login" className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-                Sign In
-              </Link>
-            ) : (
-              <>
-                <span className="text-sm text-gray-500">{userName}</span>
-                <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                  className="text-sm text-gray-400 hover:text-gray-600"
-                >
-                  Sign Out
-                </button>
-              </>
-            )}
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-              {userName.charAt(0).toUpperCase()}
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-6 py-8">
+    <PageShell>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-[length:var(--font-size-h1)] font-bold text-on-surface">
             {isGuest ? 'Welcome to SwitchOS' : `Welcome back, ${userName}`}
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-on-surface-muted mt-1">
             {isGuest
               ? 'Start learning a new operating system today. Sign in to save your progress.'
               : 'Continue where you left off.'}
@@ -86,49 +72,51 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl p-4 border border-gray-200">
-            <div className="text-2xl font-bold text-blue-600">{completedLessons}</div>
-            <div className="text-sm text-gray-500">Lessons Completed</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          <div className="bg-surface-1 rounded-lg border border-border p-6">
+            <div className="text-3xl font-bold text-success">{completedLessons}</div>
+            <div className="text-sm text-on-surface-muted mt-1">Lessons Completed</div>
           </div>
-          <div className="bg-white rounded-xl p-4 border border-gray-200">
-            <div className="text-2xl font-bold text-green-600">{totalXp}</div>
-            <div className="text-sm text-gray-500">XP Earned</div>
+          <div className="bg-surface-1 rounded-lg border border-border p-6">
+            <div className="text-3xl font-bold text-xp">{totalXp}</div>
+            <div className="text-sm text-on-surface-muted mt-1">XP Earned</div>
           </div>
-          <div className="bg-white rounded-xl p-4 border border-gray-200">
-            <div className="text-2xl font-bold text-orange-600">{streak}</div>
-            <div className="text-sm text-gray-500">Day Streak</div>
+          <div className="bg-surface-1 rounded-lg border border-border p-6">
+            <div className="text-3xl font-bold text-warning">{streak}</div>
+            <div className="text-sm text-on-surface-muted mt-1">Day Streak</div>
           </div>
-          <div className="bg-white rounded-xl p-4 border border-gray-200">
-            <div className="text-2xl font-bold text-purple-600">{badgeCount}</div>
-            <div className="text-sm text-gray-500">Badges</div>
+          <div className="bg-surface-1 rounded-lg border border-border p-6">
+            <div className="text-3xl font-bold text-primary">{badgeCount}</div>
+            <div className="text-sm text-on-surface-muted mt-1">Badges</div>
           </div>
         </div>
 
         {/* Tracks */}
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Learning Tracks</h2>
+        <h2 className="text-[length:var(--font-size-h2)] font-semibold text-on-surface mb-6">Learning Tracks</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tracks.map((track) => {
             const progress = getTrackProgress(track.id);
+            const accentBorder = TRACK_COLORS[track.id] || 'border-t-primary';
+            const progressColor = TRACK_PROGRESS_COLORS[track.id] || 'bg-primary';
             return (
               <Link
                 key={track.id}
                 href={`/tracks?id=${track.id}`}
-                className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                className={`bg-surface-1 rounded-lg border border-border border-t-3 ${accentBorder} p-6 hover:shadow-md hover:border-border-hover transition-all`}
               >
                 <div className="text-4xl mb-3">{track.icon}</div>
-                <h3 className="font-semibold text-gray-900 mb-1">{track.title}</h3>
-                <p className="text-sm text-gray-500 mb-4">{track.description}</p>
+                <h3 className="text-[length:var(--font-size-h3)] font-semibold text-on-surface mb-1">{track.title}</h3>
+                <p className="text-sm text-on-surface-muted mb-4">{track.description}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">{track.totalLessons} lessons</span>
+                  <span className="text-xs text-on-surface-muted">{track.totalLessons} lessons</span>
                   <div className="flex items-center gap-2">
-                    <div className="w-24 h-1.5 bg-gray-200 rounded-full">
+                    <div className="w-24 h-2 bg-surface-2 rounded-full">
                       <div
-                        className="h-full bg-blue-500 rounded-full transition-all"
+                        className={`h-full ${progressColor} rounded-full transition-all duration-500`}
                         style={{ width: `${progress}%` }}
                       />
                     </div>
-                    {progress > 0 && <span className="text-xs text-blue-600">{progress}%</span>}
+                    {progress > 0 && <span className="text-xs font-medium text-primary">{progress}%</span>}
                   </div>
                 </div>
               </Link>
@@ -136,20 +124,24 @@ export default function DashboardPage() {
           })}
 
           {/* Coming soon cards */}
-          <div className="bg-gray-100 rounded-xl border border-gray-200 p-6 opacity-60">
-            <div className="text-4xl mb-3">🪟</div>
-            <h3 className="font-semibold text-gray-900 mb-1">Windows Foundations</h3>
-            <p className="text-sm text-gray-500 mb-4">Master the Windows desktop environment.</p>
-            <span className="text-xs text-gray-400 bg-gray-200 px-2 py-1 rounded">Coming Soon</span>
+          <div className="bg-surface-1 rounded-lg border border-border border-t-3 border-t-track-windows p-6 opacity-50">
+            <div className="text-4xl mb-3">&#x1FA9F;</div>
+            <h3 className="text-[length:var(--font-size-h3)] font-semibold text-on-surface mb-1">Windows Foundations</h3>
+            <p className="text-sm text-on-surface-muted mb-4">Master the Windows desktop environment.</p>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-surface-2 text-on-surface-muted">
+              Coming Soon
+            </span>
           </div>
-          <div className="bg-gray-100 rounded-xl border border-gray-200 p-6 opacity-60">
-            <div className="text-4xl mb-3">🐧</div>
-            <h3 className="font-semibold text-gray-900 mb-1">Linux Foundations</h3>
-            <p className="text-sm text-gray-500 mb-4">Learn the Linux desktop and terminal.</p>
-            <span className="text-xs text-gray-400 bg-gray-200 px-2 py-1 rounded">Coming Soon</span>
+          <div className="bg-surface-1 rounded-lg border border-border border-t-3 border-t-track-linux p-6 opacity-50">
+            <div className="text-4xl mb-3">&#x1F427;</div>
+            <h3 className="text-[length:var(--font-size-h3)] font-semibold text-on-surface mb-1">Linux Foundations</h3>
+            <p className="text-sm text-on-surface-muted mb-4">Learn the Linux desktop and terminal.</p>
+            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-surface-2 text-on-surface-muted">
+              Coming Soon
+            </span>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </PageShell>
   );
 }
