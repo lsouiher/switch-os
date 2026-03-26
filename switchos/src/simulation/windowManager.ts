@@ -32,11 +32,20 @@ export function createWindowManagerState(): WindowManagerState {
 }
 
 const APP_DEFAULTS: Record<string, Partial<WindowState>> = {
+  // macOS apps
   finder: { title: 'Finder', width: 800, height: 500, minWidth: 400, minHeight: 300 },
   textedit: { title: 'Untitled', width: 600, height: 400, minWidth: 300, minHeight: 200 },
   terminal: { title: 'Terminal', width: 640, height: 400, minWidth: 400, minHeight: 250 },
   settings: { title: 'System Settings', width: 700, height: 500, minWidth: 500, minHeight: 400 },
   spotlight: { title: 'Spotlight', width: 600, height: 60, minWidth: 600, minHeight: 60 },
+  // Windows apps
+  fileexplorer: { title: 'File Explorer', width: 800, height: 500, minWidth: 400, minHeight: 300 },
+  notepad: { title: 'Untitled - Notepad', width: 600, height: 400, minWidth: 300, minHeight: 200 },
+  powershell: { title: 'Windows PowerShell', width: 680, height: 420, minWidth: 400, minHeight: 250 },
+  cmd: { title: 'Command Prompt', width: 680, height: 420, minWidth: 400, minHeight: 250 },
+  winsettings: { title: 'Settings', width: 700, height: 500, minWidth: 500, minHeight: 400 },
+  search: { title: 'Search', width: 600, height: 60, minWidth: 600, minHeight: 60 },
+  taskmanager: { title: 'Task Manager', width: 550, height: 400, minWidth: 400, minHeight: 300 },
 };
 
 export function openWindow(

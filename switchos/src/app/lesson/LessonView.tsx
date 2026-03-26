@@ -6,8 +6,13 @@ import Desktop from '@/components/simulation/Desktop';
 import CoachPanel from '@/components/learning/CoachPanel';
 import { useSimulationStore } from '@/store/useSimulationStore';
 import { getLesson, getLessonByOrder } from '@/lessons/loader';
-import { defaultMacShortcuts } from '@/simulation/keyboardHandler';
 import { useProgressSync } from '@/hooks/useProgressSync';
+import { getShortcutsForOS, formatShortcutDisplay, type OSType } from '@/simulation/osConfig';
+
+function getOsTypeFromTrack(trackId: string): OSType {
+  if (trackId.startsWith('windows')) return 'windows';
+  return 'macos';
+}
 
 interface LessonViewProps {
   lessonId: string;
@@ -17,14 +22,18 @@ export default function LessonView({ lessonId }: LessonViewProps) {
   const router = useRouter();
   const lesson = getLesson(lessonId);
   const setCurrentLesson = useSimulationStore((s) => s.setCurrentLesson);
+  const setOsType = useSimulationStore((s) => s.setOsType);
   const resetSimulation = useSimulationStore((s) => s.resetSimulation);
   const openWindow = useSimulationStore((s) => s.openWindow);
+
+  const osType = lesson ? getOsTypeFromTrack(lesson.trackId) : 'macos';
 
   // Sync progress to server
   useProgressSync(lessonId, lesson?.trackId || 'macos-foundations');
 
   useEffect(() => {
-    resetSimulation();
+    // Set OS type first, which triggers resetSimulation internally
+    setOsType(osType);
     setCurrentLesson(lessonId);
 
     // Apply lesson initial state — open specified windows
@@ -33,7 +42,7 @@ export default function LessonView({ lessonId }: LessonViewProps) {
         openWindow(win.appId, { meta: win.meta });
       }
     }
-  }, [lessonId, resetSimulation, setCurrentLesson, openWindow, lesson]);
+  }, [lessonId, setOsType, osType, setCurrentLesson, openWindow, lesson]);
 
   const handleNextLesson = () => {
     if (!lesson) return;
@@ -50,6 +59,7 @@ export default function LessonView({ lessonId }: LessonViewProps) {
   };
 
   // Relevant shortcuts for current lesson
+  const shortcuts = getShortcutsForOS(osType);
   const relevantShortcuts = useMemo(() => {
     if (!lesson) return [];
     const shortcutActions = new Set<string>();
@@ -59,11 +69,11 @@ export default function LessonView({ lessonId }: LessonViewProps) {
         shortcutActions.add(keys.join('+'));
       }
     }
-    return defaultMacShortcuts.filter((s) => {
+    return shortcuts.filter((s) => {
       const key = s.keys.join('+');
       return shortcutActions.has(key);
     }).slice(0, 4);
-  }, [lesson]);
+  }, [lesson, shortcuts]);
 
   if (!lesson) {
     return (
@@ -137,14 +147,7 @@ export default function LessonView({ lessonId }: LessonViewProps) {
           {relevantShortcuts.map((s) => (
             <span key={s.action}>
               <kbd className="px-1.5 py-0.5 bg-gray-700 rounded text-gray-300 text-[10px]">
-                {s.keys.map((k) => {
-                  if (k === 'Meta') return '⌘';
-                  if (k === 'Shift') return '⇧';
-                  if (k === 'Alt') return '⌥';
-                  if (k === 'Backspace') return '⌫';
-                  if (k === ' ') return 'Space';
-                  return k.toUpperCase();
-                }).join('')}
+                {formatShortcutDisplay(s.keys, osType)}
               </kbd>
               {' '}{s.description}
             </span>

@@ -1,0 +1,63 @@
+{
+  "id": "windows-foundations-10",
+  "trackId": "windows-foundations",
+  "order": 10,
+  "title": "Recycle Bin & Cleanup",
+  "description": "Learn to delete files, use the Recycle Bin, and clean up your desktop.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-09"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Delete the file 'SampleImage.png' from the Desktop. Select it and press the Delete key, or right-click and choose Delete.",
+      "hint": "Click on SampleImage.png on the desktop, then press the Delete key to move it to the Recycle Bin.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "item_in_trash",
+        "params": { "fileName": "SampleImage.png" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Delete the file 'Welcome.txt' from the Desktop too.",
+      "hint": "Select Welcome.txt and press Delete.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "item_in_trash",
+        "params": { "fileName": "Welcome.txt" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Create a new folder on the Desktop called 'My Projects' using Ctrl+Shift+N.",
+      "hint": "Press Ctrl+Shift+N to create a new folder, then type 'My Projects' and press Enter.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "folder_created",
+        "params": { "parentPath": "/Users/you/Desktop" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "item_in_trash", "params": { "fileName": "SampleImage.png" } },
+        { "type": "item_in_trash", "params": { "fileName": "Welcome.txt" } },
+        { "type": "folder_created", "params": { "parentPath": "/Users/you/Desktop" } }
+      ]
+    }
+  }
+}

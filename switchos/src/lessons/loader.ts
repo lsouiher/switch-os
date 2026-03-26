@@ -1,20 +1,36 @@
 import type { Lesson, Track } from './types';
 
-// Import all lesson files statically
-import lesson01 from './content/macos-foundations/01-desktop-basics.json';
-import lesson02 from './content/macos-foundations/02-dock-and-apps.json';
-import lesson03 from './content/macos-foundations/03-finder-navigation.json';
-import lesson04 from './content/macos-foundations/04-creating-files-folders.json';
-import lesson05 from './content/macos-foundations/05-moving-and-copying.json';
-import lesson06 from './content/macos-foundations/06-spotlight-search.json';
-import lesson07 from './content/macos-foundations/07-system-settings.json';
-import lesson08 from './content/macos-foundations/08-keyboard-shortcuts.json';
-import lesson09 from './content/macos-foundations/09-multiple-windows.json';
-import lesson10 from './content/macos-foundations/10-trash-and-cleanup.json';
+// macOS Foundations lessons
+import macLesson01 from './content/macos-foundations/01-desktop-basics.json';
+import macLesson02 from './content/macos-foundations/02-dock-and-apps.json';
+import macLesson03 from './content/macos-foundations/03-finder-navigation.json';
+import macLesson04 from './content/macos-foundations/04-creating-files-folders.json';
+import macLesson05 from './content/macos-foundations/05-moving-and-copying.json';
+import macLesson06 from './content/macos-foundations/06-spotlight-search.json';
+import macLesson07 from './content/macos-foundations/07-system-settings.json';
+import macLesson08 from './content/macos-foundations/08-keyboard-shortcuts.json';
+import macLesson09 from './content/macos-foundations/09-multiple-windows.json';
+import macLesson10 from './content/macos-foundations/10-trash-and-cleanup.json';
+
+// Windows Foundations lessons
+import winLesson01 from './content/windows-foundations/01-desktop-basics.json';
+import winLesson02 from './content/windows-foundations/02-start-menu-and-apps.json';
+import winLesson03 from './content/windows-foundations/03-file-explorer-navigation.json';
+import winLesson04 from './content/windows-foundations/04-creating-files-folders.json';
+import winLesson05 from './content/windows-foundations/05-moving-and-copying.json';
+import winLesson06 from './content/windows-foundations/06-search.json';
+import winLesson07 from './content/windows-foundations/07-windows-settings.json';
+import winLesson08 from './content/windows-foundations/08-keyboard-shortcuts.json';
+import winLesson09 from './content/windows-foundations/09-window-management.json';
+import winLesson10 from './content/windows-foundations/10-recycle-bin-and-cleanup.json';
 
 const ALL_LESSONS: Lesson[] = [
-  lesson01, lesson02, lesson03, lesson04, lesson05,
-  lesson06, lesson07, lesson08, lesson09, lesson10,
+  // macOS
+  macLesson01, macLesson02, macLesson03, macLesson04, macLesson05,
+  macLesson06, macLesson07, macLesson08, macLesson09, macLesson10,
+  // Windows
+  winLesson01, winLesson02, winLesson03, winLesson04, winLesson05,
+  winLesson06, winLesson07, winLesson08, winLesson09, winLesson10,
 ] as Lesson[];
 
 export function getLesson(lessonId: string): Lesson | null {
@@ -39,6 +55,14 @@ export function getAllTracks(): Track[] {
       description: 'Learn the basics of navigating and using macOS',
       icon: '🍎',
       lessons: getTrackLessons('macos-foundations'),
+      totalLessons: 10,
+    },
+    {
+      id: 'windows-foundations',
+      title: 'Windows Foundations',
+      description: 'Learn the basics of navigating and using Windows',
+      icon: '🪟',
+      lessons: getTrackLessons('windows-foundations'),
       totalLessons: 10,
     },
   ];

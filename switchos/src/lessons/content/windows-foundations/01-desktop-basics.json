@@ -1,0 +1,77 @@
+{
+  "id": "windows-foundations-01",
+  "trackId": "windows-foundations",
+  "order": 1,
+  "title": "Desktop Basics",
+  "description": "Get familiar with the Windows desktop, Taskbar, and basic elements.",
+  "estimatedMinutes": 5,
+  "difficulty": "beginner",
+  "prerequisites": [],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Look at the bottom of the screen. This is the Taskbar — it contains the Start button, search, pinned apps, and the system tray. Click the Start button (the Windows logo) on the left side of the Taskbar.",
+      "hint": "The Start button is the four-square Windows logo at the bottom-left of the Taskbar.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "composite",
+        "params": {
+          "operator": "or",
+          "checks": [
+            { "type": "right_click_on", "params": { "target": "desktop" } }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Now click the File Explorer icon (📁) in the Taskbar to open a File Explorer window.",
+      "hint": "File Explorer looks like a folder icon in the Taskbar at the bottom of the screen.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "fileexplorer" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Great! You've opened File Explorer. Now close it by clicking the X button in the top-right corner of the window.",
+      "hint": "Look at the top-right corner of the File Explorer window. Click the X button to close it.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_closed",
+        "params": { "appId": "fileexplorer" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Now right-click on an empty area of the desktop to see the context menu.",
+      "hint": "Move your mouse to any empty spot on the desktop background (not on an icon or the Taskbar) and right-click.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "right_click_on",
+        "params": { "target": "desktop" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "right_click_on", "params": { "target": "desktop" } }
+      ]
+    }
+  }
+}

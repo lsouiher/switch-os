@@ -1,0 +1,63 @@
+{
+  "id": "windows-foundations-02",
+  "trackId": "windows-foundations",
+  "order": 2,
+  "title": "Start Menu & Launching Apps",
+  "description": "Learn to use the Start Menu and launch applications.",
+  "estimatedMinutes": 5,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-01"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Launch the Notepad app by clicking it in the Taskbar or finding it in the Start Menu.",
+      "hint": "Look for the Notepad icon (📝) in the Taskbar at the bottom of the screen, or open the Start Menu and find it in the pinned apps.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "notepad" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Now launch the Settings app.",
+      "hint": "Click the Settings icon (⚙️) in the Taskbar, or open the Start Menu and click Settings.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "winsettings" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Open File Explorer using the keyboard shortcut Win+E.",
+      "hint": "Press the Windows key and E at the same time to open File Explorer.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "fileexplorer" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "notepad" } },
+        { "type": "app_launched", "params": { "appId": "winsettings" } },
+        { "type": "window_opened", "params": { "appId": "fileexplorer" } }
+      ]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "id": "windows-foundations-04",
+  "trackId": "windows-foundations",
+  "order": 4,
+  "title": "Creating Files & Folders",
+  "description": "Learn to create new files and folders on the Desktop and in File Explorer.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-03"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Create a new folder on the Desktop using the keyboard shortcut Ctrl+Shift+N.",
+      "hint": "Press Ctrl+Shift+N to create a new folder. The new folder will appear on the desktop.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": {
+          "keys": ["Control", "Shift", "n"],
+          "resultCheck": {
+            "type": "folder_created",
+            "params": { "parentPath": "/Users/you/Desktop" }
+          }
+        }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Open File Explorer and navigate to the Documents folder. Then create another new folder there.",
+      "hint": "Open File Explorer (Win+E or click the icon), go to Documents, and use the 'New folder' button in the toolbar.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "folder_created",
+        "params": { "parentPath": "/Users/you/Documents" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "folder_created", "params": { "parentPath": "/Users/you/Desktop" } },
+        { "type": "folder_created", "params": { "parentPath": "/Users/you/Documents" } }
+      ]
+    }
+  }
+}

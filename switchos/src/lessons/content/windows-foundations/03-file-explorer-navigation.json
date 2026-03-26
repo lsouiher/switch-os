@@ -1,0 +1,61 @@
+{
+  "id": "windows-foundations-03",
+  "trackId": "windows-foundations",
+  "order": 3,
+  "title": "File Explorer Navigation",
+  "description": "Learn to navigate folders using File Explorer.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["windows-foundations-02"],
+  "initialState": {
+    "fileSystem": "default-windows",
+    "openWindows": [{ "appId": "fileexplorer" }],
+    "desktopIcons": [],
+    "dockApps": ["fileexplorer", "notepad", "powershell", "winsettings"],
+    "activeApp": "fileexplorer"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "In the File Explorer sidebar, click on 'Documents' to navigate to your Documents folder.",
+      "hint": "Look at the left panel of File Explorer under 'Quick access'. Click 'Documents'.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "fileexplorer", "path": "/Users/you/Documents" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Navigate to the Downloads folder using the sidebar.",
+      "hint": "In the left panel, click 'Downloads' under Quick access.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "fileexplorer", "path": "/Users/you/Downloads" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Now navigate to the Desktop folder.",
+      "hint": "Click 'Desktop' in the sidebar.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "fileexplorer", "path": "/Users/you/Desktop" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "window_opened", "params": { "appId": "fileexplorer" } }
+      ]
+    }
+  }
+}

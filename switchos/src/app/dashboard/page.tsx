@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { getAllTracks } from '@/lessons/loader';
+import { fetchUserProgress, fetchUserProfile } from '@/hooks/useProgressSync';
 import PageShell from '@/components/ui/PageShell';
 
 interface UserProfile {
@@ -13,6 +14,13 @@ interface UserProfile {
   streak: number;
   badges: { badgeId: string }[];
   progress: { lessonId: string; trackId: string; status: string; completedSteps: string[] }[];
+}
+
+interface ProgressEntry {
+  lessonId: string;
+  trackId: string;
+  status: string;
+  completedSteps: string[];
 }
 
 const TRACK_COLORS: Record<string, string> = {
@@ -31,26 +39,30 @@ export default function DashboardPage() {
   const { data: session, status } = useSession();
   const tracks = getAllTracks();
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [localProgress, setLocalProgress] = useState<ProgressEntry[]>([]);
+
+  const isAuthenticated = status === 'authenticated';
 
   useEffect(() => {
-    if (session?.user) {
-      fetch('/api/profile')
-        .then((r) => (r.ok ? r.json() : null))
-        .then(setProfile)
-        .catch(() => {});
+    if (isAuthenticated) {
+      fetchUserProfile().then(setProfile).catch(() => {});
     }
-  }, [session]);
+    // Always load progress (server if auth'd, localStorage otherwise)
+    fetchUserProgress(isAuthenticated).then(setLocalProgress).catch(() => {});
+  }, [isAuthenticated]);
 
-  const isGuest = status !== 'authenticated';
+  const isGuest = !isAuthenticated;
   const userName = profile?.name || session?.user?.name || 'Guest';
-  const completedLessons = profile?.progress?.filter((p) => p.status === 'COMPLETED').length || 0;
-  const totalXp = profile?.xp || 0;
+
+  // Use server profile progress if available, otherwise localStorage
+  const progressData = profile?.progress || localProgress;
+  const completedLessons = progressData.filter((p) => p.status === 'COMPLETED').length;
+  const totalXp = profile?.xp || completedLessons * 25; // estimate for guests
   const streak = profile?.streak || 0;
   const badgeCount = profile?.badges?.length || 0;
 
   const getTrackProgress = (trackId: string) => {
-    if (!profile?.progress) return 0;
-    const trackProgress = profile.progress.filter((p) => p.trackId === trackId);
+    const trackProgress = progressData.filter((p) => p.trackId === trackId);
     const completed = trackProgress.filter((p) => p.status === 'COMPLETED').length;
     const total = tracks.find((t) => t.id === trackId)?.totalLessons || 10;
     return Math.round((completed / total) * 100);
@@ -124,14 +136,6 @@ export default function DashboardPage() {
           })}
 
           {/* Coming soon cards */}
-          <div className="bg-surface-1 rounded-lg border border-border border-t-3 border-t-track-windows p-6 opacity-50">
-            <div className="text-4xl mb-3">&#x1FA9F;</div>
-            <h3 className="text-[length:var(--font-size-h3)] font-semibold text-on-surface mb-1">Windows Foundations</h3>
-            <p className="text-sm text-on-surface-muted mb-4">Master the Windows desktop environment.</p>
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-surface-2 text-on-surface-muted">
-              Coming Soon
-            </span>
-          </div>
           <div className="bg-surface-1 rounded-lg border border-border border-t-3 border-t-track-linux p-6 opacity-50">
             <div className="text-4xl mb-3">&#x1F427;</div>
             <h3 className="text-[length:var(--font-size-h3)] font-semibold text-on-surface mb-1">Linux Foundations</h3>
