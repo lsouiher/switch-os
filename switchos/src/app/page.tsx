@@ -15,8 +15,8 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface-dark">
-      {/* Same dark nav bar as PageShell */}
+    <div className="min-h-screen flex flex-col">
+      {/* Dark nav bar — matches PageShell */}
       <nav className="bg-surface-dark">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-8">
@@ -68,8 +68,9 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero — dark section */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 text-center max-w-4xl mx-auto py-16">
+      {/* Hero — dark blue gradient */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 text-center bg-gradient-to-b from-gray-900 to-gray-800">
+        <div className="max-w-4xl mx-auto py-16 flex flex-col items-center">
         <div className="text-6xl mb-6">&#x1F5A5;&#xFE0F;</div>
         <h1 className="text-[length:var(--font-size-display)] sm:text-5xl font-bold tracking-tight text-on-dark mb-4 leading-tight">
           Learn Any Operating System,
@@ -122,10 +123,11 @@ export default function Home() {
             </p>
           </div>
         </div>
+        </div>
       </main>
 
-      {/* Footer */}
-      <footer className="px-4 sm:px-6 py-8 text-center text-sm text-on-dark-muted">
+      {/* Dark footer */}
+      <footer className="bg-surface-dark px-4 sm:px-6 py-8 text-center text-sm text-on-dark-muted">
         SwitchOS — The Duolingo for operating systems
       </footer>
     </div>
