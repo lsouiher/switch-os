@@ -15,6 +15,34 @@ interface ProgressData {
   showMeUsed: number;
 }
 
+const LOCAL_STORAGE_KEY = 'switchos-progress';
+
+function getLocalProgress(): ProgressData[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalProgress(data: ProgressData) {
+  if (typeof window === 'undefined') return;
+  try {
+    const existing = getLocalProgress();
+    const idx = existing.findIndex((p) => p.lessonId === data.lessonId);
+    if (idx >= 0) {
+      existing[idx] = data;
+    } else {
+      existing.push(data);
+    }
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(existing));
+  } catch {
+    // localStorage full or unavailable
+  }
+}
+
 export function useProgressSync(lessonId: string, trackId: string) {
   const { data: session } = useSession();
   const startTimeRef = useRef(Date.now());
@@ -24,8 +52,6 @@ export function useProgressSync(lessonId: string, trackId: string) {
   const lesson = useSimulationStore((s) => s.lesson);
 
   const saveProgress = useCallback(async (forceStatus?: string) => {
-    if (!session?.user) return;
-
     const completedStepsArr = Array.from(lesson.completedSteps);
     const currentStepId = lesson.currentStepIndex.toString();
     const timeSpentSecs = Math.floor((Date.now() - startTimeRef.current) / 1000);
@@ -47,14 +73,20 @@ export function useProgressSync(lessonId: string, trackId: string) {
       showMeUsed: 0,
     };
 
-    try {
-      await fetch('/api/progress', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-    } catch (e) {
-      console.error('Failed to save progress:', e);
+    // Always save to localStorage as fallback
+    saveLocalProgress(data);
+
+    // Also save to server if authenticated
+    if (session?.user) {
+      try {
+        await fetch('/api/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+      } catch (e) {
+        console.error('Failed to save progress to server:', e);
+      }
     }
   }, [session, lesson, lessonId, trackId]);
 
@@ -82,26 +114,33 @@ export function useProgressSync(lessonId: string, trackId: string) {
   // Save on unmount (leaving lesson)
   useEffect(() => {
     return () => {
-      // Can't await in cleanup, fire and forget
-      if (session?.user && lesson.completedSteps.size > 0) {
+      if (lesson.completedSteps.size > 0) {
         const completedStepsArr = Array.from(lesson.completedSteps);
         const timeSpentSecs = Math.floor((Date.now() - startTimeRef.current) / 1000);
-        navigator.sendBeacon?.(
-          '/api/progress',
-          new Blob(
-            [JSON.stringify({
-              lessonId,
-              trackId,
-              status: lesson.lessonComplete ? 'COMPLETED' : 'IN_PROGRESS',
-              currentStepId: lesson.currentStepIndex.toString(),
-              completedSteps: completedStepsArr,
-              timeSpentSecs,
-              hintsUsed: hintsUsedRef.current,
-              showMeUsed: 0,
-            })],
-            { type: 'application/json' }
-          )
-        );
+        const data: ProgressData = {
+          lessonId,
+          trackId,
+          status: (lesson.lessonComplete ? 'COMPLETED' : 'IN_PROGRESS') as ProgressData['status'],
+          currentStepId: lesson.currentStepIndex.toString(),
+          completedSteps: completedStepsArr,
+          timeSpentSecs,
+          hintsUsed: hintsUsedRef.current,
+          showMeUsed: 0,
+        };
+
+        // Always save locally
+        saveLocalProgress(data);
+
+        // Also try server if authenticated
+        if (session?.user) {
+          navigator.sendBeacon?.(
+            '/api/progress',
+            new Blob(
+              [JSON.stringify(data)],
+              { type: 'application/json' }
+            )
+          );
+        }
       }
     };
   }, []);
@@ -109,14 +148,22 @@ export function useProgressSync(lessonId: string, trackId: string) {
   return { saveProgress };
 }
 
-export async function fetchUserProgress(): Promise<ProgressData[]> {
-  try {
-    const res = await fetch('/api/progress');
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
+export async function fetchUserProgress(isAuthenticated: boolean): Promise<ProgressData[]> {
+  // Try server first if authenticated
+  if (isAuthenticated) {
+    try {
+      const res = await fetch('/api/progress');
+      if (res.ok) {
+        const serverData = await res.json();
+        if (serverData.length > 0) return serverData;
+      }
+    } catch {
+      // Fall through to localStorage
+    }
   }
+
+  // Fallback to localStorage
+  return getLocalProgress();
 }
 
 export async function fetchUserProfile() {
