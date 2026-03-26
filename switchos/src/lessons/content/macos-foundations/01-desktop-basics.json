@@ -1,0 +1,88 @@
+{
+  "id": "macos-foundations-01",
+  "trackId": "macos-foundations",
+  "order": 1,
+  "title": "Desktop Basics",
+  "description": "Get familiar with the macOS desktop, menu bar, and basic elements.",
+  "estimatedMinutes": 5,
+  "difficulty": "beginner",
+  "prerequisites": [],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Look at the top of the screen. This is the Menu Bar. Click on the Apple menu () in the top-left corner.",
+      "hint": "The Apple menu is the  icon at the very top-left of the screen. Click on it.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "composite",
+        "params": {
+          "operator": "or",
+          "checks": [
+            { "type": "right_click_on", "params": { "target": "menu-bar" } }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Now look at the bottom of the screen. This is the Dock — it holds your favorite apps. Hover over the icons to see their names.",
+      "hint": "Move your mouse to the bar of icons at the very bottom of the screen.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Click the Finder icon (📁) in the Dock to open a Finder window.",
+      "hint": "The Finder icon looks like a blue folder face. It's the first icon in the Dock at the bottom.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Great! You've opened Finder. Now close it by clicking the red circle (●) in the top-left corner of the window.",
+      "hint": "Look at the top-left corner of the Finder window. You'll see three colored circles — red, yellow, and green. Click the red one to close.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_closed",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Now right-click on an empty area of the desktop. On macOS, this opens a context menu with options.",
+      "hint": "Move your mouse to any empty spot on the desktop background (not on an icon or the Dock) and right-click.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "right_click_on",
+        "params": { "target": "desktop" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "right_click_on", "params": { "target": "desktop" } }
+      ]
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "id": "macos-foundations-05",
+  "trackId": "macos-foundations",
+  "order": 5,
+  "title": "Moving and Copying Files",
+  "description": "Learn to move and copy files between folders using drag and keyboard shortcuts.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-04"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Open Finder from the Dock and navigate to the Documents folder.",
+      "hint": "Click the Finder icon in the Dock, then click 'Documents' in the sidebar.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "You should see Notes.txt here. Click on it to select it.",
+      "hint": "Single-click on Notes.txt to select it (it will highlight).",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Documents/Notes.txt" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Copy the file using Cmd+C.",
+      "hint": "With Notes.txt selected, hold Command (⌘) and press C to copy it.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", "c"] }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Now navigate to the Desktop folder using the sidebar.",
+      "hint": "Click 'Desktop' in the Finder sidebar on the left.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Desktop" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Paste the file here using Cmd+V.",
+      "hint": "Hold Command (⌘) and press V to paste the copied file.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", "v"] }
+      }
+    },
+    {
+      "id": "step-6",
+      "order": 6,
+      "instruction": "You can also drag files between folders. Try dragging a file from the desktop into a Finder window.",
+      "hint": "Click and hold on any desktop file, drag it into the Finder window, and release.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Desktop" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "shortcut_used", "params": { "keys": ["Meta", "c"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Meta", "v"] } }
+      ]
+    }
+  }
+}

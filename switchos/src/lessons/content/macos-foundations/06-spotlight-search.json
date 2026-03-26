@@ -1,0 +1,84 @@
+{
+  "id": "macos-foundations-06",
+  "trackId": "macos-foundations",
+  "order": 6,
+  "title": "Spotlight Search",
+  "description": "Learn to use Spotlight to quickly find files and open apps.",
+  "estimatedMinutes": 5,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-05"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Press Cmd+Space to open Spotlight Search. This is one of the most useful shortcuts on macOS!",
+      "hint": "Hold the Command (⌘) key and press the Space bar.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", " "] }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Type 'Terminal' in the Spotlight search field to find the Terminal app.",
+      "hint": "Just start typing 'Terminal' in the search box that appeared.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "Terminal" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Click on Terminal in the results or press Return to open it.",
+      "hint": "Click the Terminal app in the search results, or press Enter/Return.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "terminal" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Open Spotlight again with Cmd+Space and search for 'Notes' to find the Notes.txt file.",
+      "hint": "Press Cmd+Space again, then type 'Notes'.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "search_performed",
+        "params": {}
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Click on the Notes.txt result to open it in TextEdit.",
+      "hint": "Click on Notes.txt in the Spotlight results.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "textedit" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "terminal" } },
+        { "type": "search_performed", "params": {} }
+      ]
+    }
+  }
+}

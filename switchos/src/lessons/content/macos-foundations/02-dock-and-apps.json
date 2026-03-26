@@ -1,0 +1,96 @@
+{
+  "id": "macos-foundations-02",
+  "trackId": "macos-foundations",
+  "order": 2,
+  "title": "The Dock and Launching Apps",
+  "description": "Learn to open and close apps using the Dock.",
+  "estimatedMinutes": 6,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-01"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "The Dock is the bar of icons at the bottom of your screen. Click the Finder icon (📁) to open Finder.",
+      "hint": "Look at the bottom of the screen for the row of app icons. Click the folder icon (📁) which is Finder.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Now click the TextEdit icon (📝) in the Dock to open a text editor.",
+      "hint": "Find the notepad icon (📝) in the Dock and click it to open TextEdit.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "textedit" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Notice that both apps show a small dot below their Dock icon — this means they're running. Click on the Finder window to bring it to the front.",
+      "hint": "Click anywhere on the Finder window to bring it in front of the TextEdit window.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Close the TextEdit window by clicking its red traffic light button (top-left corner).",
+      "hint": "Click the red circle in the top-left of the TextEdit window.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_closed",
+        "params": { "appId": "textedit" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Open the Terminal app (⬛) from the Dock.",
+      "hint": "Find the black square icon (⬛) in the Dock and click it.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "terminal" }
+      }
+    },
+    {
+      "id": "step-6",
+      "order": 6,
+      "instruction": "Now open System Settings (⚙️) from the Dock.",
+      "hint": "Find the gear icon (⚙️) in the Dock and click it.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "settings" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "finder" } },
+        { "type": "app_launched", "params": { "appId": "terminal" } },
+        { "type": "app_launched", "params": { "appId": "settings" } }
+      ]
+    }
+  }
+}

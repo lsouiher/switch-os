@@ -1,0 +1,96 @@
+{
+  "id": "macos-foundations-09",
+  "trackId": "macos-foundations",
+  "order": 9,
+  "title": "Working with Multiple Windows",
+  "description": "Learn to manage multiple windows — resize, arrange, and switch between them.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-08"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Open Finder from the Dock.",
+      "hint": "Click the Finder icon (📁) in the Dock.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Open TextEdit from the Dock.",
+      "hint": "Click the TextEdit icon (📝) in the Dock.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "textedit" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Open Terminal from the Dock. Now you have 3 windows open!",
+      "hint": "Click the Terminal icon (⬛) in the Dock.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "terminal" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Click on the Finder window to bring it to the front. Clicking on a window focuses it.",
+      "hint": "Find the Finder window behind the other windows and click on any visible part of it.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Try dragging a window by its title bar to reposition it. Move any window to a different spot.",
+      "hint": "Click and hold on the title bar (the gray bar at the top) of any window, then drag it to move it.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "textedit" }
+      }
+    },
+    {
+      "id": "step-6",
+      "order": 6,
+      "instruction": "Minimize a window by clicking the yellow traffic light button (●). It will shrink to the Dock.",
+      "hint": "Click the yellow circle button in the top-left corner of any window.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "terminal" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "finder" } },
+        { "type": "app_launched", "params": { "appId": "textedit" } },
+        { "type": "app_launched", "params": { "appId": "terminal" } }
+      ]
+    }
+  }
+}

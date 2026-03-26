@@ -1,0 +1,120 @@
+{
+  "id": "macos-foundations-08",
+  "trackId": "macos-foundations",
+  "order": 8,
+  "title": "Keyboard Shortcuts",
+  "description": "Master essential macOS keyboard shortcuts.",
+  "estimatedMinutes": 8,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-07"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Open TextEdit from the Dock. We'll practice shortcuts in a text editor.",
+      "hint": "Click the TextEdit icon (📝) in the Dock.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "textedit" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Type some text: 'Hello SwitchOS!'",
+      "hint": "Click inside the TextEdit window and type 'Hello SwitchOS!'",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "Hello" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Select all text using Cmd+A.",
+      "hint": "Hold Command (⌘) and press A to select all text.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", "a"] }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Copy the selected text using Cmd+C.",
+      "hint": "Hold Command (⌘) and press C to copy.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", "c"] }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Paste the text using Cmd+V.",
+      "hint": "Hold Command (⌘) and press V to paste.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", "v"] }
+      }
+    },
+    {
+      "id": "step-6",
+      "order": 6,
+      "instruction": "Undo the paste using Cmd+Z.",
+      "hint": "Hold Command (⌘) and press Z to undo the last action.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", "z"] }
+      }
+    },
+    {
+      "id": "step-7",
+      "order": 7,
+      "instruction": "Close the TextEdit window using Cmd+W.",
+      "hint": "Hold Command (⌘) and press W to close the current window.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", "w"] }
+      }
+    },
+    {
+      "id": "step-8",
+      "order": 8,
+      "instruction": "Open Spotlight using Cmd+Space — remember this one, it's the most useful shortcut!",
+      "hint": "Hold Command (⌘) and press Space to open Spotlight.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Meta", " "] }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "shortcut_used", "params": { "keys": ["Meta", "a"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Meta", "c"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Meta", "v"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Meta", "z"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Meta", "w"] } }
+      ]
+    }
+  }
+}

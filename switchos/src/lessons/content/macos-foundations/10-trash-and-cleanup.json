@@ -1,0 +1,90 @@
+{
+  "id": "macos-foundations-10",
+  "trackId": "macos-foundations",
+  "order": 10,
+  "title": "Trash and Cleanup",
+  "description": "Learn to delete files, use the Trash, and clean up your desktop.",
+  "estimatedMinutes": 6,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-09"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Open Finder and navigate to the Desktop folder.",
+      "hint": "Click Finder in the Dock, then click 'Desktop' in the sidebar.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Right-click on 'SampleImage.png' and select 'Move to Trash'.",
+      "hint": "Right-click on SampleImage.png and choose 'Move to Trash' from the menu.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "item_in_trash",
+        "params": { "fileName": "SampleImage.png" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "You can also use Cmd+Backspace to trash files. Select Welcome.txt and press Cmd+Backspace.",
+      "hint": "Click on Welcome.txt to select it, then hold Command (⌘) and press Delete/Backspace.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "composite",
+        "params": {
+          "operator": "and",
+          "checks": [
+            { "type": "shortcut_used", "params": { "keys": ["Meta", "Backspace"] } },
+            { "type": "item_in_trash", "params": { "fileName": "Welcome.txt" } }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "The files are now in the Trash but not permanently deleted. Click the Trash icon in the Dock to see them.",
+      "hint": "Click the Trash can icon (🗑️) at the right end of the Dock.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "To permanently delete, you would use 'Empty Trash'. For now, you've completed the macOS Foundations track! Congratulations!",
+      "hint": "You did it! Click anywhere to finish the lesson.",
+      "hintDelayMs": 20000,
+      "completionCheck": {
+        "type": "item_in_trash",
+        "params": { "fileName": "SampleImage.png" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "item_in_trash", "params": { "fileName": "SampleImage.png" } },
+        { "type": "item_in_trash", "params": { "fileName": "Welcome.txt" } }
+      ]
+    }
+  }
+}

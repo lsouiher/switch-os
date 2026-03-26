@@ -1,0 +1,111 @@
+{
+  "id": "macos-foundations-04",
+  "trackId": "macos-foundations",
+  "order": 4,
+  "title": "Creating Files and Folders",
+  "description": "Learn how to create new folders and files on your Mac desktop and in Finder.",
+  "estimatedMinutes": 8,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-03"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [
+      { "nodeId": "welcome-txt", "x": 50, "y": 50 },
+      { "nodeId": "sample-img", "x": 50, "y": 130 }
+    ],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Right-click on an empty area of the Desktop to open the context menu.",
+      "hint": "Move your mouse to an empty spot on the desktop background (not on an icon) and right-click.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "right_click_on",
+        "params": { "target": "desktop" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Select 'New Folder' from the context menu.",
+      "hint": "Look for 'New Folder' in the menu that appeared. Click on it.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "folder_created",
+        "params": { "parentPath": "/Users/you/Desktop" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Name the folder 'My Project' and press Return to confirm.",
+      "hint": "The folder name should be highlighted and editable. Type 'My Project' and press the Return (Enter) key.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Desktop/My Project" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Double-click the 'My Project' folder to open it in Finder.",
+      "hint": "Double-click means two quick clicks on the folder icon.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Use the keyboard shortcut Cmd+Shift+N to create a new folder inside the Finder window.",
+      "hint": "Hold down the Command (⌘) key and Shift key together, then press N.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": {
+          "keys": ["Meta", "Shift", "n"]
+        }
+      }
+    },
+    {
+      "id": "step-6",
+      "order": 6,
+      "instruction": "Name this folder 'Notes' and press Return.",
+      "hint": "Type 'Notes' and press Return to confirm the name.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Desktop/My Project" }
+      }
+    },
+    {
+      "id": "step-7",
+      "order": 7,
+      "instruction": "Open TextEdit from the Dock and type some text to practice creating content.",
+      "hint": "Click the TextEdit icon (📝) in the Dock and start typing anything.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "textedit" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "folder_created", "params": { "parentPath": "/Users/you/Desktop" } },
+        { "type": "window_opened", "params": { "appId": "textedit" } }
+      ]
+    }
+  }
+}

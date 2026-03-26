@@ -1,0 +1,105 @@
+{
+  "id": "macos-foundations-03",
+  "trackId": "macos-foundations",
+  "order": 3,
+  "title": "Navigating with Finder",
+  "description": "Learn to navigate through files and folders using Finder.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-02"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Open Finder from the Dock.",
+      "hint": "Click the Finder icon (📁) in the Dock at the bottom.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "finder" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "In the Finder sidebar on the left, click 'Documents' to navigate there.",
+      "hint": "Look at the left sidebar of the Finder window. Under 'Favorites', click 'Documents'.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Documents" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "You should see Notes.txt and Report.docx. Now click 'Downloads' in the sidebar.",
+      "hint": "In the sidebar, click 'Downloads' to navigate to the Downloads folder.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Downloads" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Now click 'Desktop' in the sidebar to go back to the Desktop.",
+      "hint": "Click 'Desktop' in the Finder sidebar.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Desktop" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Try switching to List view using the view toggle buttons in the toolbar.",
+      "hint": "Look at the top-right of the Finder toolbar for small view toggle buttons (≡ for list view).",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Desktop/Welcome.txt" }
+      }
+    },
+    {
+      "id": "step-6",
+      "order": 6,
+      "instruction": "Navigate to the Applications folder by clicking it in the sidebar.",
+      "hint": "Scroll down in the sidebar and click 'Applications'.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Applications" }
+      }
+    },
+    {
+      "id": "step-7",
+      "order": 7,
+      "instruction": "Use the Back button (◀) in the Finder toolbar to go back to the previous folder.",
+      "hint": "Click the left arrow (◀) at the top-left of the Finder content area.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/Users/you/Desktop" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "window_opened", "params": { "appId": "finder" } }
+      ]
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "id": "macos-foundations-07",
+  "trackId": "macos-foundations",
+  "order": 7,
+  "title": "System Settings",
+  "description": "Explore System Settings and customize your Mac.",
+  "estimatedMinutes": 6,
+  "difficulty": "beginner",
+  "prerequisites": ["macos-foundations-06"],
+  "initialState": {
+    "fileSystem": "default-macos",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["finder", "textedit", "terminal", "settings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Open System Settings from the Dock (⚙️ gear icon).",
+      "hint": "Click the gear icon (⚙️) in the Dock at the bottom.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "settings" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "In System Settings, click on 'Wallpaper' in the sidebar.",
+      "hint": "Look at the left sidebar and click 'Wallpaper'.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "settings" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Click on the 'Monterey' wallpaper to change your desktop background.",
+      "hint": "Click on the blue wallpaper option labeled 'Monterey'.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "setting_changed",
+        "params": { "setting": "wallpaper", "value": "monterey" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Now click 'About This Mac' in the sidebar to see system information.",
+      "hint": "Click 'About This Mac' in the settings sidebar.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "settings" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Try changing the wallpaper to another option — pick any you like!",
+      "hint": "Go back to Wallpaper in the sidebar and click a different wallpaper option.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "setting_changed",
+        "params": { "setting": "wallpaper", "value": "ventura" }
+      }
+    },
+    {
+      "id": "step-6",
+      "order": 6,
+      "instruction": "Close System Settings by clicking the red traffic light button.",
+      "hint": "Click the red circle in the top-left of the System Settings window.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "window_closed",
+        "params": { "appId": "settings" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "setting_changed", "params": { "setting": "wallpaper", "value": "monterey" } }
+      ]
+    }
+  }
+}

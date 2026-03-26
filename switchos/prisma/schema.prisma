@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  image         String?
+  tier          Tier      @default(FREE)
+  xp            Int       @default(0)
+  streak        Int       @default(0)
+  lastActiveAt  DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  progress      LessonProgress[]
+  badges        UserBadge[]
+  agentSessions AgentSession[]
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LessonProgress {
+  id              String       @id @default(cuid())
+  userId          String
+  lessonId        String
+  trackId         String
+  status          LessonStatus @default(NOT_STARTED)
+  currentStepId   String?
+  completedSteps  String[]     @default([])
+  startedAt       DateTime?
+  completedAt     DateTime?
+  timeSpentSecs   Int          @default(0)
+  attempts        Int          @default(0)
+  hintsUsed       Int          @default(0)
+  showMeUsed      Int          @default(0)
+  savedState      Json?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId, trackId])
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+}
+
+model AgentSession {
+  id          String        @id @default(cuid())
+  userId      String
+  osType      OSType
+  status      SessionStatus @default(ACTIVE)
+  taskId      String?
+  actions     Json[]        @default([])
+  screenshots Int           @default(0)
+  startedAt   DateTime      @default(now())
+  endedAt     DateTime?
+  result      Json?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+}
+
+enum Tier {
+  FREE
+  SWITCHER
+  ENTERPRISE
+}
+
+enum LessonStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum OSType {
+  MACOS
+  WINDOWS
+  LINUX
+}
+
+enum SessionStatus {
+  ACTIVE
+  COMPLETED
+  EXPIRED
+  FAILED
+}
