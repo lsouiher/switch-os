@@ -1,0 +1,62 @@
+{
+  "id": "linux-foundations-08",
+  "trackId": "linux-foundations",
+  "order": 8,
+  "title": "Settings & Customization",
+  "description": "Make Linux your own! Change backgrounds, explore settings, and express yourself.",
+  "estimatedMinutes": 5,
+  "difficulty": "beginner",
+  "prerequisites": ["linux-foundations-07"],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Click the Settings icon (⚙️) in the dock to open GNOME Settings.",
+      "hint": "The gear icon (⚙️) in the dock opens Settings. Click it!",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "linuxsettings" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "You're in Settings! The 'Background' section should be selected. Pick a new wallpaper to customize your desktop!",
+      "hint": "Click one of the wallpaper previews to change your desktop background.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "setting_changed",
+        "params": { "setting": "wallpaper", "value": "any" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Nice new look! Click 'About' in the sidebar to see info about your system.",
+      "hint": "Click 'About' (ℹ️) in the left sidebar of Settings.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "search_performed",
+        "params": {}
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "linuxsettings" } },
+        { "type": "setting_changed", "params": { "setting": "wallpaper", "value": "any" } }
+      ]
+    }
+  }
+}

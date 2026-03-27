@@ -1,0 +1,84 @@
+{
+  "id": "linux-foundations-10",
+  "trackId": "linux-foundations",
+  "order": 10,
+  "title": "Cleanup & Review",
+  "description": "Tidy up your desktop and celebrate everything you've learned! You've earned your penguin badge. 🐧",
+  "estimatedMinutes": 6,
+  "difficulty": "beginner",
+  "prerequisites": ["linux-foundations-09"],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Open the Files app from the dock and navigate to the Desktop.",
+      "hint": "Click the Files icon (📁) in the dock, then click 'Desktop' in the sidebar.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "filemanager" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Right-click on the todo.txt file and select 'Move to Trash' to clean up.",
+      "hint": "Right-click on todo.txt, then click 'Move to Trash'.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "item_in_trash",
+        "params": { "fileName": "todo.txt" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Now open the Terminal (Ctrl+Alt+T) for one final command!",
+      "hint": "Press Ctrl+Alt+T to open the Terminal.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "linuxterminal" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Create your graduation file! Type: touch Desktop/i-know-linux.txt",
+      "hint": "Type 'touch Desktop/i-know-linux.txt' and press Enter.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "file_exists",
+        "params": { "path": "/home/you/Desktop/i-know-linux.txt" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "🎉 Congratulations! Type: echo 'I am a Linux penguin!' — to celebrate your graduation!",
+      "hint": "Type: echo 'I am a Linux penguin!' and press Enter.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "echo" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "item_in_trash", "params": { "fileName": "todo.txt" } },
+        { "type": "file_exists", "params": { "path": "/home/you/Desktop/i-know-linux.txt" } }
+      ]
+    }
+  }
+}

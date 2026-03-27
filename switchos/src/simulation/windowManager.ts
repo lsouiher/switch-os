@@ -46,6 +46,11 @@ const APP_DEFAULTS: Record<string, Partial<WindowState>> = {
   winsettings: { title: 'Settings', width: 700, height: 500, minWidth: 500, minHeight: 400 },
   search: { title: 'Search', width: 600, height: 60, minWidth: 600, minHeight: 60 },
   taskmanager: { title: 'Task Manager', width: 550, height: 400, minWidth: 400, minHeight: 300 },
+  // Linux apps
+  filemanager: { title: 'Files', width: 800, height: 500, minWidth: 400, minHeight: 300 },
+  texteditor: { title: 'Text Editor', width: 600, height: 400, minWidth: 300, minHeight: 200 },
+  linuxterminal: { title: 'Terminal', width: 640, height: 400, minWidth: 400, minHeight: 250 },
+  linuxsettings: { title: 'Settings', width: 700, height: 500, minWidth: 500, minHeight: 400 },
 };
 
 export function openWindow(

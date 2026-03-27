@@ -11,6 +11,7 @@ import { getShortcutsForOS, formatShortcutDisplay, type OSType } from '@/simulat
 
 function getOsTypeFromTrack(trackId: string): OSType {
   if (trackId.startsWith('windows')) return 'windows';
+  if (trackId.startsWith('linux')) return 'linux';
   return 'macos';
 }
 

@@ -351,6 +351,143 @@ export function findByName(state: FileSystemState, name: string): FileSystemNode
   );
 }
 
+export function createDefaultLinuxFileSystem(): FileSystemState {
+  const root = createNode({ name: '/', type: 'folder' });
+  const home = createNode({ name: 'home', type: 'folder', parentId: root.id });
+  const you = createNode({ name: 'you', type: 'folder', parentId: home.id });
+  const desktop = createNode({ name: 'Desktop', type: 'folder', parentId: you.id });
+  const documents = createNode({ name: 'Documents', type: 'folder', parentId: you.id });
+  const downloads = createNode({ name: 'Downloads', type: 'folder', parentId: you.id });
+  const pictures = createNode({ name: 'Pictures', type: 'folder', parentId: you.id });
+  const music = createNode({ name: 'Music', type: 'folder', parentId: you.id });
+  const videos = createNode({ name: 'Videos', type: 'folder', parentId: you.id });
+
+  const etc = createNode({ name: 'etc', type: 'folder', parentId: root.id });
+  const usr = createNode({ name: 'usr', type: 'folder', parentId: root.id });
+  const usrShare = createNode({ name: 'share', type: 'folder', parentId: usr.id });
+  const applications = createNode({ name: 'applications', type: 'folder', parentId: usrShare.id });
+  const varDir = createNode({ name: 'var', type: 'folder', parentId: root.id });
+  const tmp = createNode({ name: 'tmp', type: 'folder', parentId: root.id });
+  const opt = createNode({ name: 'opt', type: 'folder', parentId: root.id });
+
+  const welcomeTxt = createNode({
+    name: 'Welcome.txt',
+    type: 'file',
+    parentId: desktop.id,
+    content: 'Welcome to Linux! You\'re officially a penguin person now. 🐧\n\nDon\'t worry — nothing here can break. Explore freely!',
+    icon: 'text',
+    size: 105,
+    metadata: { fileExtension: 'txt', mimeType: 'text/plain' },
+  });
+  const todoTxt = createNode({
+    name: 'todo.txt',
+    type: 'file',
+    parentId: desktop.id,
+    content: '[ ] Learn to navigate the desktop\n[ ] Open the file manager\n[ ] Try the terminal\n[ ] Become a Linux wizard 🧙',
+    icon: 'text',
+    size: 102,
+    metadata: { fileExtension: 'txt', mimeType: 'text/plain' },
+  });
+  const penguinFacts = createNode({
+    name: 'penguin-facts.txt',
+    type: 'file',
+    parentId: documents.id,
+    content: 'Fun Penguin & Linux Facts!\n\n🐧 Tux the penguin has been the Linux mascot since 1996.\n🐧 Linus Torvalds chose a penguin because he was bitten by one at a zoo.\n🐧 Linux runs on everything from phones to supercomputers.\n🐧 Over 96% of the world\'s top 1 million servers run Linux.\n🐧 The first Linux kernel was just 10,000 lines of code!',
+    icon: 'text',
+    size: 320,
+    metadata: { fileExtension: 'txt', mimeType: 'text/plain' },
+  });
+  const secretRecipe = createNode({
+    name: 'secret-recipe.txt',
+    type: 'file',
+    parentId: documents.id,
+    content: 'The Secret Recipe for Mastering Linux:\n\n1. Don\'t be afraid of the terminal — it\'s your best friend\n2. Tab completion saves lives (and typing)\n3. When in doubt, type \'help\'\n4. Read error messages — they\'re trying to help!\n5. Have fun and experiment freely 🎉',
+    icon: 'text',
+    size: 250,
+    metadata: { fileExtension: 'txt', mimeType: 'text/plain' },
+  });
+  const notesTxt = createNode({
+    name: 'Notes.txt',
+    type: 'file',
+    parentId: documents.id,
+    content: 'My Linux notes go here.',
+    icon: 'text',
+    size: 23,
+    metadata: { fileExtension: 'txt', mimeType: 'text/plain' },
+  });
+  const vacationJpg = createNode({
+    name: 'vacation.jpg',
+    type: 'file',
+    parentId: pictures.id,
+    icon: 'image',
+    size: 3200000,
+    metadata: { fileExtension: 'jpg', mimeType: 'image/jpeg' },
+  });
+  const setupAppImage = createNode({
+    name: 'cool-app.AppImage',
+    type: 'file',
+    parentId: downloads.id,
+    icon: 'file',
+    size: 45000000,
+    metadata: { fileExtension: 'AppImage' },
+  });
+
+  const hostname = createNode({
+    name: 'hostname',
+    type: 'file',
+    parentId: etc.id,
+    content: 'switchos-penguin',
+    icon: 'text',
+    size: 17,
+    metadata: { isSystem: true },
+  });
+  const osRelease = createNode({
+    name: 'os-release',
+    type: 'file',
+    parentId: etc.id,
+    content: 'NAME="SwitchOS Linux"\nVERSION="1.0 (Fun Edition)"\nID=switchos\nPRETTY_NAME="SwitchOS Linux 1.0 (Fun Edition)"',
+    icon: 'text',
+    size: 100,
+    metadata: { isSystem: true },
+  });
+
+  const fileManagerApp = createNode({ name: 'Files.app', type: 'app', parentId: applications.id, icon: 'filemanager' });
+  const textEditorApp = createNode({ name: 'Text Editor.app', type: 'app', parentId: applications.id, icon: 'texteditor' });
+  const terminalApp = createNode({ name: 'Terminal.app', type: 'app', parentId: applications.id, icon: 'linuxterminal' });
+  const settingsApp = createNode({ name: 'Settings.app', type: 'app', parentId: applications.id, icon: 'linuxsettings' });
+
+  const trash = createNode({ name: 'Trash', type: 'folder', parentId: root.id });
+
+  // Wire up children
+  root.children = [home.id, etc.id, usr.id, varDir.id, tmp.id, opt.id, trash.id];
+  home.children = [you.id];
+  you.children = [desktop.id, documents.id, downloads.id, pictures.id, music.id, videos.id];
+  desktop.children = [welcomeTxt.id, todoTxt.id];
+  documents.children = [penguinFacts.id, secretRecipe.id, notesTxt.id];
+  downloads.children = [setupAppImage.id];
+  pictures.children = [vacationJpg.id];
+  etc.children = [hostname.id, osRelease.id];
+  usr.children = [usrShare.id];
+  usrShare.children = [applications.id];
+  applications.children = [fileManagerApp.id, textEditorApp.id, terminalApp.id, settingsApp.id];
+
+  const allNodes = [
+    root, home, you, desktop, documents, downloads, pictures, music, videos,
+    etc, usr, usrShare, applications, varDir, tmp, opt,
+    welcomeTxt, todoTxt, penguinFacts, secretRecipe, notesTxt, vacationJpg, setupAppImage,
+    hostname, osRelease,
+    fileManagerApp, textEditorApp, terminalApp, settingsApp,
+    trash,
+  ];
+
+  const nodes: Record<string, FileSystemNode> = {};
+  for (const node of allNodes) {
+    nodes[node.id] = node;
+  }
+
+  return { nodes, rootId: root.id, trashId: trash.id };
+}
+
 export function createDefaultWindowsFileSystem(): FileSystemState {
   const root = createNode({ name: '/', type: 'folder' });
   const users = createNode({ name: 'Users', type: 'folder', parentId: root.id });

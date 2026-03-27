@@ -1,0 +1,72 @@
+{
+  "id": "linux-foundations-03",
+  "trackId": "linux-foundations",
+  "order": 3,
+  "title": "Exploring with Files",
+  "description": "Navigate your filesystem like a true explorer! Learn to find your way around.",
+  "estimatedMinutes": 6,
+  "difficulty": "beginner",
+  "prerequisites": ["linux-foundations-02"],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [{ "appId": "filemanager" }],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": "filemanager"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "The Files app is already open. In the left sidebar, click on 'Documents' to navigate there.",
+      "hint": "Look at the sidebar on the left. You'll see a list of places. Click 'Documents'.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "filemanager", "path": "/home/you/Documents" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "You should see some fun files here! Now click on 'Home' in the sidebar to go to your home folder.",
+      "hint": "Click 'Home' in the left sidebar to navigate to /home/you.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "filemanager", "path": "/home/you" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "From here you can see all your folders — Desktop, Documents, Downloads, and more. Click on 'Desktop' in the sidebar.",
+      "hint": "Click 'Desktop' in the left sidebar.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "filemanager", "path": "/home/you/Desktop" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "You'll see Welcome.txt and todo.txt on the Desktop. Double-click Welcome.txt to open it!",
+      "hint": "Double-click on the Welcome.txt file to open it in the text editor.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "texteditor" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "texteditor" } }
+      ]
+    }
+  }
+}

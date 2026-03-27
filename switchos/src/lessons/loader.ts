@@ -24,6 +24,18 @@ import winLesson08 from './content/windows-foundations/08-keyboard-shortcuts.jso
 import winLesson09 from './content/windows-foundations/09-window-management.json';
 import winLesson10 from './content/windows-foundations/10-recycle-bin-and-cleanup.json';
 
+// Linux Foundations lessons
+import linLesson01 from './content/linux-foundations/01-welcome-to-linux.json';
+import linLesson02 from './content/linux-foundations/02-dock-and-launching.json';
+import linLesson03 from './content/linux-foundations/03-files-and-folders.json';
+import linLesson04 from './content/linux-foundations/04-creating-files-folders.json';
+import linLesson05 from './content/linux-foundations/05-moving-copying.json';
+import linLesson06 from './content/linux-foundations/06-meet-the-terminal.json';
+import linLesson07 from './content/linux-foundations/07-terminal-power-ups.json';
+import linLesson08 from './content/linux-foundations/08-settings-customization.json';
+import linLesson09 from './content/linux-foundations/09-keyboard-shortcuts.json';
+import linLesson10 from './content/linux-foundations/10-cleanup-and-review.json';
+
 const ALL_LESSONS: Lesson[] = [
   // macOS
   macLesson01, macLesson02, macLesson03, macLesson04, macLesson05,
@@ -31,6 +43,9 @@ const ALL_LESSONS: Lesson[] = [
   // Windows
   winLesson01, winLesson02, winLesson03, winLesson04, winLesson05,
   winLesson06, winLesson07, winLesson08, winLesson09, winLesson10,
+  // Linux
+  linLesson01, linLesson02, linLesson03, linLesson04, linLesson05,
+  linLesson06, linLesson07, linLesson08, linLesson09, linLesson10,
 ] as Lesson[];
 
 export function getLesson(lessonId: string): Lesson | null {
@@ -63,6 +78,14 @@ export function getAllTracks(): Track[] {
       description: 'Learn the basics of navigating and using Windows',
       icon: '🪟',
       lessons: getTrackLessons('windows-foundations'),
+      totalLessons: 10,
+    },
+    {
+      id: 'linux-foundations',
+      title: 'Linux Foundations',
+      description: 'Learn the Linux desktop and terminal — the penguin way!',
+      icon: '🐧',
+      lessons: getTrackLessons('linux-foundations'),
       totalLessons: 10,
     },
   ];
