@@ -22,13 +22,11 @@ export default function LinuxTerminal({ windowId }: { windowId: string }) {
 
   const getNodeByPath = useSimulationStore((s) => s.getNodeByPath);
   const getChildren = useSimulationStore((s) => s.getChildren);
-  const getNodePath = useSimulationStore((s) => s.getNodePath);
   const createFileFn = useSimulationStore((s) => s.createFile);
   const createFolderFn = useSimulationStore((s) => s.createFolder);
   const deleteNode = useSimulationStore((s) => s.deleteNode);
   const moveNode = useSimulationStore((s) => s.moveNode);
   const copyNode = useSimulationStore((s) => s.copyNode);
-  const fileSystem = useSimulationStore((s) => s.fileSystem);
   const recordAction = useSimulationStore((s) => s.recordAction);
 
   useEffect(() => {

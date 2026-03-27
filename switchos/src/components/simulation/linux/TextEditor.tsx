@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSimulationStore } from '@/store/useSimulationStore';
 
 export default function TextEditor({ windowId }: { windowId: string }) {
@@ -12,16 +12,18 @@ export default function TextEditor({ windowId }: { windowId: string }) {
 
   const fileId = windowState?.meta?.fileId as string | undefined;
   const file = fileId ? fileSystem.nodes[fileId] : null;
+  const prevFileIdRef = useRef(fileId);
 
   const [content, setContent] = useState(file?.content || '');
   const [modified, setModified] = useState(false);
 
-  useEffect(() => {
+  if (prevFileIdRef.current !== fileId) {
+    prevFileIdRef.current = fileId;
     if (file) {
       setContent(file.content);
       setModified(false);
     }
-  }, [fileId]);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);

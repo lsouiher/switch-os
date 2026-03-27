@@ -135,15 +135,6 @@ export default function DashboardPage() {
             );
           })}
 
-          {/* Coming soon cards */}
-          <div className="bg-surface-1 rounded-lg border border-border border-t-3 border-t-track-linux p-6 opacity-50">
-            <div className="text-4xl mb-3">&#x1F427;</div>
-            <h3 className="text-[length:var(--font-size-h3)] font-semibold text-on-surface mb-1">Linux Foundations</h3>
-            <p className="text-sm text-on-surface-muted mb-4">Learn the Linux desktop and terminal.</p>
-            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-surface-2 text-on-surface-muted">
-              Coming Soon
-            </span>
-          </div>
         </div>
       </div>
     </PageShell>

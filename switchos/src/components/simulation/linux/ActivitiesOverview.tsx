@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { useSimulationStore } from '@/store/useSimulationStore';
 import type { FileSystemNode } from '@/simulation/fileSystem';
 
@@ -18,7 +18,6 @@ export default function ActivitiesOverview() {
   const recordAction = useSimulationStore((s) => s.recordAction);
 
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<FileSystemNode[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -26,16 +25,11 @@ export default function ActivitiesOverview() {
     inputRef.current?.focus();
   }, []);
 
-  useEffect(() => {
-    if (query.trim()) {
-      const found = findByName(query).filter(
-        (n) => !n.metadata?.isSystem && n.name !== '/' && n.name !== 'you' && n.name !== 'home'
-      ).slice(0, 12);
-      setResults(found);
-      setSelectedIndex(0);
-    } else {
-      setResults([]);
-    }
+  const results = useMemo(() => {
+    if (!query.trim()) return [];
+    return findByName(query).filter(
+      (n) => !n.metadata?.isSystem && n.name !== '/' && n.name !== 'you' && n.name !== 'home'
+    ).slice(0, 12);
   }, [query, findByName]);
 
   const grouped = results.reduce<{ apps: FileSystemNode[]; folders: FileSystemNode[]; files: FileSystemNode[] }>(
