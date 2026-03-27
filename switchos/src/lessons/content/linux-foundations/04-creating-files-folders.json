@@ -1,0 +1,73 @@
+{
+  "id": "linux-foundations-04",
+  "trackId": "linux-foundations",
+  "order": 4,
+  "title": "Creating Files & Folders",
+  "description": "Time to make your mark! Create some files and folders on your Linux desktop.",
+  "estimatedMinutes": 6,
+  "difficulty": "beginner",
+  "prerequisites": ["linux-foundations-03"],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Right-click on the desktop and select 'New Folder' to create a new folder.",
+      "hint": "Right-click on any empty area of the desktop, then click 'New Folder' in the menu.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "folder_created",
+        "params": { "parentPath": "/home/you/Desktop" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Nice folder! Now open the Terminal from the dock (⬛) — let's create a file the Linux way!",
+      "hint": "Click the Terminal icon (⬛) in the dock on the left side.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "linuxterminal" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "In the Terminal, type: touch hello.txt — This creates an empty file called hello.txt!",
+      "hint": "Type 'touch hello.txt' and press Enter.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "touch hello.txt" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Now type: ls — to see your new file listed in the current directory!",
+      "hint": "Type 'ls' and press Enter to list files.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "ls" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "folder_created", "params": { "parentPath": "/home/you/Desktop" } },
+        { "type": "app_launched", "params": { "appId": "linuxterminal" } }
+      ]
+    }
+  }
+}

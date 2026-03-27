@@ -1,0 +1,77 @@
+{
+  "id": "linux-foundations-01",
+  "trackId": "linux-foundations",
+  "order": 1,
+  "title": "Welcome to Linux!",
+  "description": "Meet your new desktop and discover what makes Linux special. You're a penguin now! 🐧",
+  "estimatedMinutes": 5,
+  "difficulty": "beginner",
+  "prerequisites": [],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Welcome to Linux! 🐧 See the dark bar at the top? That's the Top Bar. Click the 'Activities' button in the top-left corner to see what happens!",
+      "hint": "Look at the very top-left of the screen — there's an 'Activities' button. Click it!",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "composite",
+        "params": {
+          "operator": "or",
+          "checks": [
+            { "type": "right_click_on", "params": { "target": "menu-bar" } }
+          ]
+        }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "See the vertical dock on the left side? That's your app launcher! Click the Files icon (📁) to open the file manager.",
+      "hint": "The dock is the column of icons on the left side of the screen. Click the folder icon (📁) at the top.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "filemanager" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Nice! You've opened the Files app (also known as Nautilus). Now close it by clicking the ✕ button on the right side of the title bar.",
+      "hint": "Look at the top-right corner of the Files window. Click the ✕ button to close it.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "window_closed",
+        "params": { "appId": "filemanager" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Now right-click anywhere on the empty desktop. In Linux, this gives you quick access to useful actions!",
+      "hint": "Move your mouse to any empty spot on the desktop background and right-click.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "right_click_on",
+        "params": { "target": "desktop" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "right_click_on", "params": { "target": "desktop" } }
+      ]
+    }
+  }
+}

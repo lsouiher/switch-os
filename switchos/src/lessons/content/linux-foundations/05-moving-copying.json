@@ -1,0 +1,73 @@
+{
+  "id": "linux-foundations-05",
+  "trackId": "linux-foundations",
+  "order": 5,
+  "title": "Moving, Copying & Organizing",
+  "description": "Organize your files like a tidy penguin! Learn to move and copy things around.",
+  "estimatedMinutes": 6,
+  "difficulty": "beginner",
+  "prerequisites": ["linux-foundations-04"],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [{ "appId": "filemanager" }],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": "filemanager"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "In the Files app, navigate to 'Documents' using the sidebar. You'll see some files we can practice with.",
+      "hint": "Click 'Documents' in the left sidebar of the Files app.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "window_opened",
+        "params": { "appId": "filemanager", "path": "/home/you/Documents" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Now open the Terminal from the dock — let's move a file using the command line!",
+      "hint": "Click the Terminal icon (⬛) in the dock.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "linuxterminal" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "In the Terminal, type: cp Documents/Notes.txt Desktop/ — This copies Notes.txt to your Desktop!",
+      "hint": "Type 'cp Documents/Notes.txt Desktop/' and press Enter.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "cp Documents/Notes.txt Desktop/" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Check if it worked! Type: ls Desktop/ — You should see Notes.txt listed there.",
+      "hint": "Type 'ls Desktop/' and press Enter to see the files on your Desktop.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "ls Desktop/" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "app_launched", "params": { "appId": "filemanager" } },
+        { "type": "app_launched", "params": { "appId": "linuxterminal" } }
+      ]
+    }
+  }
+}

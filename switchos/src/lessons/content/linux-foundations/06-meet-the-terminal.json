@@ -1,0 +1,95 @@
+{
+  "id": "linux-foundations-06",
+  "trackId": "linux-foundations",
+  "order": 6,
+  "title": "Meet the Terminal",
+  "description": "Say hello to your new superpower: the command line! It might look scary, but it's your best friend.",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["linux-foundations-05"],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Every Linux pro knows this shortcut: press Ctrl+Alt+T to open the Terminal instantly!",
+      "hint": "Hold Ctrl and Alt, then press T. This is the most famous Linux shortcut!",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Control", "Alt", "t"] }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "The terminal is ready! Type: pwd — This stands for 'Print Working Directory' and shows where you are.",
+      "hint": "Type 'pwd' and press Enter to see your current location in the filesystem.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "pwd" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "You should see /home/you — that's your home directory! Now type: ls — to see what's in here.",
+      "hint": "Type 'ls' and press Enter to list all files and folders.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "ls" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "You can see Desktop, Documents, Downloads, etc. Type: cd Documents — to move into the Documents folder.",
+      "hint": "Type 'cd Documents' and press Enter to change directory.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "cd Documents" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Now type: ls — to see what's in Documents. You should find some fun text files!",
+      "hint": "Type 'ls' and press Enter.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "ls" }
+      }
+    },
+    {
+      "id": "step-6",
+      "order": 6,
+      "instruction": "Type: cd ~ — The tilde (~) is a shortcut for your home directory. It takes you home instantly!",
+      "hint": "Type 'cd ~' and press Enter to go back to your home directory.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "cd ~" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "shortcut_used", "params": { "keys": ["Control", "Alt", "t"] } },
+        { "type": "app_launched", "params": { "appId": "linuxterminal" } }
+      ]
+    }
+  }
+}

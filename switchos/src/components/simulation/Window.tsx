@@ -126,6 +126,63 @@ function WindowsTitleBar({
   );
 }
 
+function LinuxTitleBar({
+  title,
+  isFocused,
+  onClose,
+  onMinimize,
+  onMaximize,
+  onMouseDown,
+}: {
+  title: string;
+  isFocused: boolean;
+  onClose: (e: React.MouseEvent) => void;
+  onMinimize: (e: React.MouseEvent) => void;
+  onMaximize: (e: React.MouseEvent) => void;
+  onMouseDown: (e: React.MouseEvent) => void;
+}) {
+  return (
+    <div
+      className="flex items-center h-9 px-3 shrink-0 cursor-default select-none"
+      style={{
+        background: isFocused ? '#2d2d2d' : '#3d3d3d',
+        borderBottom: '1px solid rgba(0,0,0,0.2)',
+      }}
+      onMouseDown={onMouseDown}
+    >
+      {/* Title (centered) */}
+      <div className="flex-1 text-center text-xs text-gray-300 font-medium truncate">
+        {title}
+      </div>
+
+      {/* Window controls (right-aligned, GNOME style) */}
+      <div className="traffic-light flex items-center gap-2 ml-4">
+        <button
+          onClick={onMinimize}
+          aria-label="Minimize window"
+          className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"
+        >
+          <span className="text-[10px] text-gray-400 leading-none">─</span>
+        </button>
+        <button
+          onClick={onMaximize}
+          aria-label="Maximize window"
+          className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"
+        >
+          <span className="text-[10px] text-gray-400 leading-none">□</span>
+        </button>
+        <button
+          onClick={onClose}
+          aria-label="Close window"
+          className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-[#e95420] transition-colors group"
+        >
+          <span className="text-[10px] text-gray-400 group-hover:text-white leading-none">✕</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function Window({ windowId, children }: WindowProps) {
   const windowState = useSimulationStore((s) => s.windowManager.windows[windowId]);
   const osType = useSimulationStore((s) => s.osType);
@@ -154,7 +211,7 @@ export default function Window({ windowId, children }: WindowProps) {
       const onMove = (me: MouseEvent) => {
         const dx = me.clientX - startX;
         const dy = me.clientY - startY;
-        const minY = osType === 'macos' ? 28 : 0;
+        const minY = osType === 'windows' ? 0 : 28;
         moveWindowTo(windowId, startWinX + dx, Math.max(minY, startWinY + dy));
       };
 
@@ -242,9 +299,10 @@ export default function Window({ windowId, children }: WindowProps) {
   };
 
   const isWindows = osType === 'windows';
-  const borderRadius = isWindows ? '8px' : '10px';
+  const isLinux = osType === 'linux';
+  const borderRadius = isLinux ? '12px' : isWindows ? '8px' : '10px';
 
-  const TitleBar = isWindows ? WindowsTitleBar : MacTitleBar;
+  const TitleBar = isLinux ? LinuxTitleBar : isWindows ? WindowsTitleBar : MacTitleBar;
 
   return (
     <div
@@ -261,10 +319,14 @@ export default function Window({ windowId, children }: WindowProps) {
         boxShadow: windowState.isFocused
           ? isWindows
             ? '0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.08)'
-            : '0 22px 70px 4px rgba(0,0,0,0.56)'
+            : isLinux
+              ? '0 12px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.15)'
+              : '0 22px 70px 4px rgba(0,0,0,0.56)'
           : isWindows
             ? '0 4px 16px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05)'
-            : '0 8px 30px rgba(0,0,0,0.2)',
+            : isLinux
+              ? '0 4px 20px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.1)'
+              : '0 8px 30px rgba(0,0,0,0.2)',
         opacity: windowState.isFocused ? 1 : 0.95,
       }}
       onMouseDown={() => focusWindow(windowId)}

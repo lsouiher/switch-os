@@ -1,0 +1,84 @@
+{
+  "id": "linux-foundations-07",
+  "trackId": "linux-foundations",
+  "order": 7,
+  "title": "Terminal Power-Ups",
+  "description": "Level up with more commands: mkdir, touch, cat, and friends. You're basically a hacker now! (A friendly one.)",
+  "estimatedMinutes": 7,
+  "difficulty": "beginner",
+  "prerequisites": ["linux-foundations-06"],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [{ "appId": "linuxterminal" }],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": "linuxterminal"
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Let's create a projects folder! Type: mkdir projects",
+      "hint": "Type 'mkdir projects' and press Enter to create a new folder called 'projects'.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "mkdir projects" }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Now create a file inside it! Type: touch projects/my-first-file.txt",
+      "hint": "Type 'touch projects/my-first-file.txt' and press Enter.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "touch projects/my-first-file.txt" }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Want to read a file? Type: cat Documents/penguin-facts.txt — This prints the file's contents!",
+      "hint": "Type 'cat Documents/penguin-facts.txt' and press Enter to read the file.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "cat Documents/penguin-facts.txt" }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "Cool penguin facts! 🐧 Now let's copy that file: type: cp Documents/penguin-facts.txt projects/",
+      "hint": "Type 'cp Documents/penguin-facts.txt projects/' and press Enter.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "cp Documents/penguin-facts.txt projects/" }
+      }
+    },
+    {
+      "id": "step-5",
+      "order": 5,
+      "instruction": "Verify it worked! Type: ls projects/ — You should see both files in there.",
+      "hint": "Type 'ls projects/' and press Enter.",
+      "hintDelayMs": 10000,
+      "completionCheck": {
+        "type": "text_typed",
+        "params": { "text": "ls projects/" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "folder_created", "params": { "parentPath": "/home/you" } },
+        { "type": "file_exists", "params": { "path": "/home/you/projects/my-first-file.txt" } }
+      ]
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "linux-foundations-09",
+  "trackId": "linux-foundations",
+  "order": 9,
+  "title": "Keyboard Shortcuts & Multitasking",
+  "description": "Work smarter, not harder! Master the keyboard shortcuts that make Linux a joy to use.",
+  "estimatedMinutes": 6,
+  "difficulty": "beginner",
+  "prerequisites": ["linux-foundations-08"],
+  "initialState": {
+    "fileSystem": "default-linux",
+    "openWindows": [],
+    "desktopIcons": [],
+    "dockApps": ["filemanager", "texteditor", "linuxterminal", "linuxsettings", "trash"],
+    "activeApp": null
+  },
+  "steps": [
+    {
+      "id": "step-1",
+      "order": 1,
+      "instruction": "Let's start with the most iconic Linux shortcut: press Ctrl+Alt+T to open the Terminal!",
+      "hint": "Hold Ctrl and Alt together, then press T.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Control", "Alt", "t"] }
+      }
+    },
+    {
+      "id": "step-2",
+      "order": 2,
+      "instruction": "Terminal opened! Now close it with Ctrl+W — this closes the current window.",
+      "hint": "Hold Ctrl and press W to close the focused window.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Control", "w"] }
+      }
+    },
+    {
+      "id": "step-3",
+      "order": 3,
+      "instruction": "Now use Ctrl+Shift+N to create a new folder on the desktop. This works everywhere in Linux!",
+      "hint": "Hold Ctrl and Shift together, then press N.",
+      "hintDelayMs": 15000,
+      "completionCheck": {
+        "type": "shortcut_used",
+        "params": { "keys": ["Control", "Shift", "n"] }
+      }
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "instruction": "You're a shortcut master! Open the Files app from the dock to continue.",
+      "hint": "Click the Files icon (📁) in the dock.",
+      "hintDelayMs": 12000,
+      "completionCheck": {
+        "type": "app_launched",
+        "params": { "appId": "filemanager" }
+      }
+    }
+  ],
+  "completionCriteria": {
+    "type": "composite",
+    "params": {
+      "operator": "and",
+      "checks": [
+        { "type": "shortcut_used", "params": { "keys": ["Control", "Alt", "t"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Control", "w"] } },
+        { "type": "shortcut_used", "params": { "keys": ["Control", "Shift", "n"] } }
+      ]
+    }
+  }
+}
