@@ -44,6 +44,25 @@ export const defaultWindowsShortcuts: ShortcutDefinition[] = [
   { keys: ['Meta'], action: 'startMenu', description: 'Start Menu' },
 ];
 
+export const defaultLinuxShortcuts: ShortcutDefinition[] = [
+  { keys: ['Control', 'c'], action: 'copy', description: 'Copy' },
+  { keys: ['Control', 'v'], action: 'paste', description: 'Paste' },
+  { keys: ['Control', 'x'], action: 'cut', description: 'Cut' },
+  { keys: ['Control', 'z'], action: 'undo', description: 'Undo' },
+  { keys: ['Control', 'a'], action: 'selectAll', description: 'Select All' },
+  { keys: ['Control', 'n'], action: 'new', description: 'New' },
+  { keys: ['Control', 'w'], action: 'closeWindow', description: 'Close Window' },
+  { keys: ['Alt', 'F4'], action: 'quitApp', description: 'Close App' },
+  { keys: ['Control', 'Alt', 't'], action: 'openTerminal', description: 'Open Terminal' },
+  { keys: ['Meta'], action: 'activities', description: 'Activities Overview' },
+  { keys: ['Control', 'Shift', 'n'], action: 'newFolder', description: 'New Folder' },
+  { keys: ['Delete'], action: 'moveToTrash', description: 'Move to Trash' },
+  { keys: ['Control', 'd'], action: 'duplicate', description: 'Duplicate' },
+  { keys: ['Control', 'f'], action: 'find', description: 'Find' },
+  { keys: ['F2'], action: 'rename', description: 'Rename' },
+  { keys: ['Control', 'l'], action: 'openLocation', description: 'Open Location Bar' },
+];
+
 export function matchShortcut(
   pressedKeys: Set<string>,
   shortcuts: ShortcutDefinition[],

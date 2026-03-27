@@ -1,9 +1,9 @@
 import type { FileSystemState } from './fileSystem';
-import { createDefaultMacFileSystem, createDefaultWindowsFileSystem } from './fileSystem';
+import { createDefaultMacFileSystem, createDefaultWindowsFileSystem, createDefaultLinuxFileSystem } from './fileSystem';
 import type { ShortcutDefinition } from './keyboardHandler';
-import { defaultMacShortcuts, defaultWindowsShortcuts } from './keyboardHandler';
+import { defaultMacShortcuts, defaultWindowsShortcuts, defaultLinuxShortcuts } from './keyboardHandler';
 
-export type OSType = 'macos' | 'windows';
+export type OSType = 'macos' | 'windows' | 'linux';
 
 export interface OSConfig {
   desktopPath: string;
@@ -54,6 +54,28 @@ export const OS_CONFIGS: Record<OSType, OSConfig> = {
     formatShortcutKey: (key: string) => {
       switch (key) {
         case 'Meta': return 'Win';
+        case 'Control': return 'Ctrl';
+        case 'Alt': return 'Alt';
+        case 'Shift': return 'Shift';
+        case 'Backspace': return 'Backspace';
+        case 'Delete': return 'Del';
+        case ' ': return 'Space';
+        default: return key.toUpperCase();
+      }
+    },
+  },
+  linux: {
+    desktopPath: '/home/you/Desktop',
+    defaultActiveApp: 'filemanager',
+    trashName: 'Trash',
+    fileSystemFactory: createDefaultLinuxFileSystem,
+    shortcuts: defaultLinuxShortcuts,
+    formatDisplayPath: (path: string) => path,
+    menuBarHeight: 28,
+    taskbarHeight: 0,
+    formatShortcutKey: (key: string) => {
+      switch (key) {
+        case 'Meta': return 'Super';
         case 'Control': return 'Ctrl';
         case 'Alt': return 'Alt';
         case 'Shift': return 'Shift';
